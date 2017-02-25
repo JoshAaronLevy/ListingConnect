@@ -1,0 +1,90 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-blog.jade
+
+block scripts
+	script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	.page-content
+		.container
+			script.
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				ga('create', 'UA-50168733-1', 'auto');
+				ga('send', 'pageview');
+			// Google Tag Manager
+			noscript
+				iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+			script.
+				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+			// End Google Tag Manager
+			.heading-blog
+				h2.section-heading BLOG
+				hr
+			.row
+				.col-md-9
+					// BLOG ENTRIES
+					.blog.medium-thumbnail.margin-bottom-30px
+						// blog post
+						article.entry-post
+							header.entry-header
+								h2.entry-title
+									a(href='post-sample.html') Objectively Disseminate Customer Directed E-commerce
+								.meta-line.clearfix
+									//- .meta-author-category.pull-left
+										span.post-author
+											| by
+											a(href='#') John Doe
+										span.post-category
+											| In:
+											a(href='#') Business
+											| ,
+											a(href='#') Creative
+											| ,
+											a(href='#') Media
+									//- .meta-tag-comment.pull-right
+										span.post-tags
+											i.fa.fa-tag
+											a(href='#') story
+											| ,
+											a(href='#') inspiration
+											| ,
+											a(href='#') creative
+										span.post-comment
+											i.fa.fa-comments
+											a(href='#') 3 Comments
+							.entry-content.clearfix
+								.row
+									.col-sm-1
+										figure.featured-image
+											a(href='post-sample.html')
+												.post-date-info.clearfix
+													span.post-month DEC
+													span.post-date 11
+													span.post-year 2014
+												//- img.img-responsive(src='assets/img/blog/buildings-med.jpg', alt='featured-image')
+									.col-sm-9
+										.excerpt
+											p
+												| Proactively reinvent team building customer service with ethical e-markets. Professionally utilize mission-critical technology whereas competitive solutions. Completely underwhelm go forward leadership without maintainable initiatives. Objectively disseminate customer directed e-commerce with prospective partnerships. Collaboratively actualize revolutionary total linkage before orthogonal catalysts for change. Appropriately facilitate optimal meta-services whereas end-to-end solutions...
+											p.read-more
+												a.btn.btn-primary(href='post-sample.html')
+													| Read More
+													i.fa.fa-arrow-right.ml5
+						// end blog post
+						hr
+					// END BLOG ENTRIES
+					ul.pager
+						li
+							a(href='#') Previous
+						li
+							a(href='#') Next
+				include sidebar

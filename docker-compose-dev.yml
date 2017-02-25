@@ -1,0 +1,18 @@
+nginx:
+  build: ./docker-services/nginx
+  links:
+    - app
+  ports:
+    - "8080:80"
+#    - "443:443"
+  volumes_from:
+    - app
+# - /etc/letsencrypt:/etc/letsencrypt
+
+app:
+  build: ./
+  ports:
+      - "3000"
+      # - "4433"
+  volumes:
+    - ./_output:/html

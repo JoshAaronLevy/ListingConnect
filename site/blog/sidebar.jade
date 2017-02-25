@@ -1,0 +1,181 @@
+.col-md-3
+	// SIDEBAR
+	// search form
+	//- .widget
+		form.form-search(action='#')
+			.input-group
+				input.form-control(type='text', placeholder='enter search term')
+				span.input-group-btn
+					button.btn.btn-primary(type='button') Search
+	// end search form
+	// categories
+	.widget
+		h4.widget-title CATEGORIES
+		ul.list-unstyled.category-list
+			li
+				a(href='#') Business (23)
+			li
+				a(href='#') Creative (14)
+				ul.sub-category-list
+					li
+						a(href='#') Digital Imaging (8)
+					li
+						a(href='#') Web Design (6)
+			li
+				a(href='#') Media (65)
+			li
+				a(href='#') Photography (17)
+			li
+				a(href='#') Corporate (9)
+	// end categories
+	// tabbed content
+	.widget
+		.tabpanel
+			// nav tabs
+			ul.nav.nav-tabs(role='tablist')
+				li.active(role='presentation')
+					a(href='#content-recents', aria-controls='content-recents', role='tab', data-toggle='tab') RECENT
+				//- li(role='presentation')
+					a(href='#content-popular', aria-controls='content-popular', role='tab', data-toggle='tab') POPULAR
+				//- li(role='presentation')
+					a(href='#content-recent-comments', aria-controls='content-recent-comments', role='tab', data-toggle='tab')
+						i.fa.fa-comments
+			// end nav tabs
+			// tab panes
+			.tab-content
+				#content-recents.tab-pane.fade.in.active(role='tabpanel')
+					ul.list-unstyled.blogposts.latest
+						li
+							h4.post-title
+								a(href='#') Assertively Streamline Error-free Quality
+							span.text-muted Dec 9, 2014 | by John Doe
+						li
+							h4.post-title
+								a(href='#')
+									| Proactively Monetize Long-term High-impact Architectures After Value-added Experiences
+							span.text-muted Dec 12, 2014 | by George
+						li
+							h4.post-title
+								a(href='#') Efficiently Repurpose Enterprise-wide Processes For Granular Applications
+							span.text-muted Dec 29, 2014 | by Jane
+						li
+							h4.post-title
+								a(href='#') Monotonectally Underwhelm Sustainable Outsourcing
+							span.text-muted Nov 4, 2014 | by John Doe
+						li
+							h4.post-title
+								a(href='#') Seamlessly Repurpose Equity Invested Intellectual Capital
+							span.text-muted Nov 23, 2014 | by George
+				//- #content-popular.tab-pane.fade(role='tabpanel')
+					ul.list-unstyled.blogposts.popular
+						li
+							h4.post-title
+								a(href='#') Monotonectally Underwhelm Sustainable Outsourcing
+							span.text-muted Nov 4, 2014 | by John Doe
+						li
+							h4.post-title
+								a(href='#') Seamlessly Repurpose Equity Invested Intellectual Capital
+							span.text-muted Nov 23, 2014 | by George
+						li
+							h4.post-title
+								a(href='#')
+									| Efficiently Aggregate Multidisciplinary Markets With Professional Functionalities
+							span.text-muted Nov 9, 2014 | by Jane
+						li
+							h4.post-title
+								a(href='#') Collaboratively Actualize Revolutionary Total Linkage
+							span.text-muted Nov 9, 2014 | by Smith
+						li
+							h4.post-title
+								a(href='#') Credibly Disintermediate Client-centered Applications
+							span.text-muted Nov 9, 2014 | by Barbara
+				//- #content-recent-comments.tab-pane.fade(role='tabpanel')
+					ul.list-unstyled.recent-comments
+						li
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user1.png', alt='Avatar')
+								.media-body
+									h4.media-heading
+										a(href='#') Antonio
+										|  in
+										a(href='#') Holisticly Unleash Enabled Information Via Customized Value
+									p.text-muted
+										| Interactively grow cross-media customer service through B2C paradigms. Continually monetize magnetic sources rather than ...
+						li
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user2.png', alt='Avatar')
+								.media-body
+									h4.media-heading
+										a(href='#') Michael
+										|  in
+										a(href='#') Holisticly Unleash Enabled Information Via Customized Value
+									p.text-muted
+										| Objectively disseminate customer directed e-commerce with prospective partnerships. Collaboratively actualize ...
+						li
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user3.png', alt='Avatar')
+								.media-body
+									h4.media-heading
+										a(href='#') Laura
+										|  in
+										a(href='#') Holisticly Unleash Enabled Information Via Customized Value
+									p.text-muted Continually monetize magnetic sources rather than leveraged outsourcing ...
+						li
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user4.png', alt='Avatar')
+								.media-body
+									h4.media-heading
+										a(href='#') Diana
+										|  in
+										a(href='#') Holisticly Unleash Enabled Information Via Customized Value
+									p.text-muted
+										| Objectively disseminate customer directed e-commerce with prospective partnerships. Collaboratively actualize ...
+						li
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user5.png', alt='Avatar')
+								.media-body
+									h4.media-heading
+										a(href='#') Henry
+										|  in
+										a(href='#') Holisticly Unleash Enabled Information Via Customized Value
+									p.text-muted
+										| Proactively reinvent team building customer service with ethical e-markets. Professionally utilize mission-critical ...
+			// end tab panes
+	// end tabbed content
+	// tags
+	//- .widget
+		h4.widget-title TAGS
+		ul.list-inline.tag-list
+			li
+				a(href='#') story
+			li
+				a(href='#') inspiration
+			li
+				a(href='#') creative
+			li
+				a(href='#') e-commerce
+			li
+				a(href='#') statistic data
+			li
+				a(href='#') business
+			li
+				a(href='#') development
+			li
+				a(href='#') startup ideas
+			li
+				a(href='#') enterprise
+	// end tags
+	// text widget
+	.widget
+		h4.widget-title TEXT WIDGET
+		p
+			| Conveniently develop parallel technologies via user-centric benefits. Globally deploy turnkey technologies vis-a-vis excellent partnerships. Completely aggregate one-to-one human capital with principle-centered initiatives. Seamlessly enable web-enabled.
+		p
+			| Appropriately foster ethical architectures via functional alignments. Holisticly unleash enabled information via customized value. Collaboratively syndicate corporate benefits without process-centric communities.
+	// end text widget
+	// END SIDEBAR

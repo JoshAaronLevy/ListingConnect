@@ -1,0 +1,441 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-user.jade
+
+block scripts
+	script(src="/js/apps/agent/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	script.
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-50168733-1', 'auto');
+		ga('send', 'pageview');
+	// Google Tag Manager
+	noscript
+		iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+	script.
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+	// End Google Tag Manager
+	.wrapper
+		.container
+			div(ng-controller="MessageController")
+				.col-md-12
+					center(align="center")
+						h2.name Messages
+						br
+						.alert.alert-danger.alert-danger-rw.alert-dismissible(role="alert", ng-if="message && message.length < 1")
+							button.close(type="button", data-dismiss="alert")
+								span(aria-hidden="true") &#215;
+								span.sr-only Close
+							| You have no messages yet. You can begin messaging with a lead by clicking, 'Message' on any of your leads in the, 'Leads' page above.
+					table.table.table-hover
+						thead
+							tr
+								th Created
+								th Status
+								th Lead
+								th Message
+								//- th Type
+								//- th Read
+								th Manage
+						tbody
+							tr(ng-repeat="message in messages | orderBy:'createdAt':true", ng-if="message.agentDeleted !== 'Yes'")
+								td {{message.createdAt | date : 'short'}}
+								td
+									i.fa.fa-mail-reply(ng-if="message.agentReplied === 'Yes'", data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="A summary about you and your professional qualifications.")
+									i.fa.fa-exclamation.false(ng-if="message.createdBy !== 'Agent' && (message.agentViewed !== 'Yes' && message.agentReplied !== 'Yes')")
+								td
+									| {{message.consumer.profileName}}
+									a.fa.fa-search.pointer.ml5(data-toggle="modal", data-target="#viewLeadModal", ng-click="$root.selectedMessage = message")
+								td
+									| {{message.message}}
+								//- td {{message.sentBy}}
+								//- td {{message.read}}
+								td
+									button.btn-table.btn-primary(data-toggle="modal", data-target="#viewMessageModal", ng-click="$root.selectedMessage = message") View
+									button.btn-table.btn-success(ng-if="message.createdBy !== 'Agent'", data-toggle="modal", data-target="#agentMessageModal", ng-click="$root.selectedMessage = message") Reply
+									button.btn-table.btn-danger(data-toggle="modal", data-target="#removeMessageModal", ng-click="$root.selectedMessage = message") Delete
+
+				#removeMessageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title Delete Message
+							.modal-body
+								form(role="deleteMsgForm", ng-submit="removeMessage(message)")
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Are you sure you would like to delete this message? {{$root.selectedMessage.message}}
+										.row
+											center(align="center")
+												br
+												button.btn.btn-primary.mr10(type="submit") Yes
+												button.btn.btn-danger(data-dismiss="modal") No
+										.row
+											center(align="center")
+												.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+							//- .modal-footer
+							//-	 button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+				#viewMessageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title View Message
+							.modal-body
+								form(role="viewMsgForm", ng-submit="viewMessage(message)")
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center {{$root.selectedMessage.message}}
+										.row
+											center(align="center")
+												br
+												//- button.btn.btn-primary.mr10(type="submit") Send
+												button.btn.btn-danger(type="submit") Close
+										.row
+											center(align="center")
+												.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+							//- .modal-footer
+							//-	 button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+				#agentMessageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title View/Reply To Message
+							.modal-body
+								form(role="sendMsgForm", ng-submit="replyMessage()")
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center {{$root.selectedMessage.message}}
+										.row
+											.col-xs-10
+												textarea.form-control(placeholder='Message', rows='5', ng-model="$root.message.message")
+											center(align="center")
+												br
+												button.btn.btn-primary.mr80.mt15(type="submit") Send
+										.row
+											center(align="center")
+												.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+				#viewLeadModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-body
+								center(align="center")
+									.modal-title {{$root.selectedMessage.consumer.profileName}}
+									//- .modal-subtitle {{$root.selectedMessage.consumer.profileName}}
+									//- h2.subtitle {{$root.selectedMessage.consumer.profileName}}
+									//- a.btn.btn-danger.btn-subtitle.mr10(ng-click="faveLead($root.selectedMessage.consumer)")
+									//- 	| Favorite
+									//- a.btn.btn-danger.mr10(ng-if="selectedMessage.consumer.favorite === true", ng-disabled="selectedMessage.consumer.favorite === true")
+									//- 	| In Favorites
+								br
+								center(align="center")
+									.custom-tabs-line.tabs-line-bottom
+										ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedMessage.consumer.buyer === 'Yes' && $root.selectedMessage.consumer.seller === 'No'")
+											li.active
+												a(href="#buyerDetails", data-toggle="tab")
+													| Details
+										ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedMessage.consumer.seller === 'Yes' && $root.selectedMessage.consumer.buyer === 'Yes'")
+											li.active
+												a(href="#sellerDetails", data-toggle="tab")
+													| Current Home
+											li
+												a(href="#buyerDetails", data-toggle="tab")
+													| Next Home
+										ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedMessage.consumer.seller === 'Yes' && !$root.selectedMessage.consumer.buyer === 'No'")
+											li.active
+												a(href="#sellerDetails", data-toggle="tab")
+													| Current Home
+									.tab-content.clearfix(ng-if="$root.selectedMessage.consumer.seller === 'Yes' && $root.selectedMessage.consumer.buyer === 'No'")
+										#sellerDetails.tab-pane.fade.in.active
+											.col-sm-6
+												.section-title
+													h4 Current Home Details
+													hr
+												ul.profile-table.text-left
+													li
+														.field Selling Timeframe:
+														.value(ng-if="!$root.selectedMessage.consumer.timeframe") N/A
+														.value(ng-if="$root.selectedMessage.consumer.timeframe") {{$root.selectedMessage.consumer.timeframe}}
+													li
+														.field Price Range:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPriceMin && !$root.selectedMessage.consumer.sellerPriceMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPriceMin && $root.selectedMessage.consumer.sellerPriceMax") {{$root.selectedMessage.consumer.sellerPriceMin | currency : $ : 0}} to {{$root.selectedMessage.consumer.sellerPriceMax | currency : $ : 0}}
+													li
+														.field Property Type:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPropType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPropType") {{$root.selectedMessage.consumer.sellerPropType}}
+													li
+														.field Property Style:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPropStyle") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPropStyle") {{$root.selectedMessage.consumer.sellerPropStyle}}
+													li
+														.field Bedrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBeds") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBeds") {{$root.selectedMessage.consumer.sellerBeds}}
+													li
+														.field Bathrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBaths") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBaths") {{$root.selectedMessage.consumer.sellerBaths}}
+													li
+														.field Square Feet:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerSqft") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerSqft") {{$root.selectedMessage.consumer.sellerSqft | number : 0}}
+													li
+														.field City, State:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerCity && !$root.selectedMessage.consumer.state") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerCity && $root.selectedMessage.consumer.state") {{$root.selectedMessage.consumer.sellerCity}}, {{$root.selectedMessage.consumer.state}}
+													li
+														.field Parking Type:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerParkingType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerParkingType") {{$root.selectedMessage.consumer.sellerParkingType}}
+													li
+														.field Parking Spaces:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerParkingSpaces") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerParkingSpaces") {{$root.selectedMessage.consumer.sellerParkingSpaces}}
+													li
+														.field Basement:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBasementType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBasementType") {{$root.selectedMessage.consumer.sellerBasementType}}
+													li
+														.field School District:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerSchoolDist") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerSchoolDist") {{$root.selectedMessage.consumer.sellerSchoolDist}}
+													li
+														.field HOA Fee:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerHoaFee && !$root.selectedMessage.consumer.sellerHoaTerm") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerHoaFee && $root.selectedMessage.consumer.sellerHoaTerm") {{$root.selectedMessage.consumer.sellerHoaFee | currency : $ : 0}} per {{$root.selectedMessage.consumer.sellerHoaTerm}}
+													li
+														.field Lot Size:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerLotSize") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerLotSize") {{$root.selectedMessage.consumer.sellerLotSize | number : 0}}
+													li
+														.field Year Built:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerYearBuilt") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerYearBuilt") {{$root.selectedMessage.consumer.sellerYearBuilt}}
+											.col-sm-6
+												.section-title
+													h4 Seller Remarks
+													hr
+												p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedMessage.consumer.sellerRemarks)", ng-if="$root.selectedMessage.consumer.sellerRemarks")
+												.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedMessage.consumer.sellerRemarks") There are no seller remarks currently available.
+									.tab-content.clearfix(ng-if="$root.selectedMessage.consumer.seller === 'Yes' && $root.selectedMessage.consumer.buyer === 'Yes'")
+										#sellerDetails.tab-pane.fade.in.active
+											.col-sm-6
+												.section-title
+													h4 Current Home Details
+													hr
+												ul.profile-table.text-left
+													li
+														.field Selling Timeframe:
+														.value(ng-if="!$root.selectedMessage.consumer.timeframe") N/A
+														.value(ng-if="$root.selectedMessage.consumer.timeframe") {{$root.selectedMessage.consumer.timeframe}}
+													li
+														.field Price Range:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPriceMin && !$root.selectedMessage.consumer.sellerPriceMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPriceMin && $root.selectedMessage.consumer.sellerPriceMax") {{$root.selectedMessage.consumer.sellerPriceMin | currency : $ : 0}} to {{$root.selectedMessage.consumer.sellerPriceMax | currency : $ : 0}}
+													li
+														.field Property Type:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPropType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPropType") {{$root.selectedMessage.consumer.sellerPropType}}
+													li
+														.field Property Style:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerPropStyle") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerPropStyle") {{$root.selectedMessage.consumer.sellerPropStyle}}
+													li
+														.field Bedrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBeds") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBeds") {{$root.selectedMessage.consumer.sellerBeds}}
+													li
+														.field Bathrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBaths") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBaths") {{$root.selectedMessage.consumer.sellerBaths}}
+													li
+														.field Square Feet:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerSqft") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerSqft") {{$root.selectedMessage.consumer.sellerSqft | number : 0}}
+													li
+														.field City, State:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerCity && !$root.selectedMessage.consumer.state") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerCity && $root.selectedMessage.consumer.state") {{$root.selectedMessage.consumer.sellerCity}}, {{$root.selectedMessage.consumer.state}}
+													li
+														.field Parking Type:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerParkingType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerParkingType") {{$root.selectedMessage.consumer.sellerParkingType}}
+													li
+														.field Parking Spaces:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerParkingSpaces") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerParkingSpaces") {{$root.selectedMessage.consumer.sellerParkingSpaces}}
+													li
+														.field Basement:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerBasementType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerBasementType") {{$root.selectedMessage.consumer.sellerBasementType}}
+													li
+														.field School District:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerSchoolDist") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerSchoolDist") {{$root.selectedMessage.consumer.sellerSchoolDist}}
+													li
+														.field HOA Fee:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerHoaFee && !$root.selectedMessage.consumer.sellerHoaTerm") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerHoaFee && $root.selectedMessage.consumer.sellerHoaTerm") {{$root.selectedMessage.consumer.sellerHoaFee | currency : $ : 0}} per {{$root.selectedMessage.consumer.sellerHoaTerm}}
+													li
+														.field Lot Size:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerLotSize") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerLotSize") {{$root.selectedMessage.consumer.sellerLotSize | number : 0}}
+													li
+														.field Year Built:
+														.value(ng-if="!$root.selectedMessage.consumer.sellerYearBuilt") N/A
+														.value(ng-if="$root.selectedMessage.consumer.sellerYearBuilt") {{$root.selectedMessage.consumer.sellerYearBuilt}}
+											.col-sm-6
+												.section-title
+													h4 Seller Remarks
+													hr
+												p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedMessage.consumer.sellerRemarks)", ng-if="$root.selectedMessage.consumer.sellerRemarks")
+												.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedMessage.consumer.sellerRemarks") There are no seller remarks currently available.
+										#buyerDetails.tab-pane.fade.in
+											.col-sm-6
+												.section-title
+													h4 Next Home Details
+													hr
+												ul.profile-table.text-left
+													li
+														.field Buying Timeframe:
+														.value(ng-if="!$root.selectedMessage.consumer.timeframe") N/A
+														.value(ng-if="$root.selectedMessage.consumer.timeframe") {{$root.selectedMessage.consumer.timeframe}}
+													li
+														.field Property Type:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerPropType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerPropType") {{$root.selectedMessage.consumer.buyerPropType}}
+													li
+														.field Price Range:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerPriceMin && !$root.selectedMessage.consumer.buyerPriceMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerPriceMin && $root.selectedMessage.consumer.buyerPriceMax") {{$root.selectedMessage.consumer.buyerPriceMin | currency : $ : 0}} to {{$root.selectedMessage.consumer.buyerPriceMax | currency : $ : 0}}
+													li
+														.field Bedrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerBedsMin && !$root.selectedMessage.consumer.buyerBedsMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerBedsMin && $root.selectedMessage.consumer.buyerBedsMax") {{$root.selectedMessage.consumer.buyerBedsMin}} to {{$root.selectedMessage.consumer.buyerBedsMax}}
+													li
+														.field Bathrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerBathsMin && !$root.selectedMessage.consumer.buyerBathsMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerBathsMin && $root.selectedMessage.consumer.buyerBathsMax") {{$root.selectedMessage.consumer.buyerBathsMin}} to {{$root.selectedMessage.consumer.buyerBathsMax}}
+													li
+														.field Square Feet:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerSqftMin && !$root.selectedMessage.consumer.buyerSqftMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerSqftMin && $root.selectedMessage.consumer.buyerSqftMax") {{$root.selectedMessage.consumer.buyerSqftMin | number : 0}} to {{$root.selectedMessage.consumer.buyerSqftMax | number : 0}}
+													li
+														.field Cities:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerCities") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerCities") {{$root.selectedMessage.consumer.buyerCities.join(', ')}}
+											.col-sm-6
+												.section-title
+													h4 Buyer Remarks
+													hr
+												p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedMessage.consumer.buyerRemarks)", ng-if="$root.selectedMessage.consumer.buyerRemarks")
+												.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedMessage.consumer.buyerRemarks") There are no buyer remarks currently available.
+									.tab-content.clearfix(ng-if="$root.selectedMessage.consumer.seller === 'No' && $root.selectedMessage.consumer.buyer === 'Yes'")
+										#buyerDetails.tab-pane.fade.in.active
+											.col-sm-6
+												.section-title
+													h4 Next Home Details
+													hr
+												ul.profile-table.text-left
+													li
+														.field Buying Timeframe:
+														.value(ng-if="!$root.selectedMessage.consumer.timeframe") N/A
+														.value(ng-if="$root.selectedMessage.consumer.timeframe") {{$root.selectedMessage.consumer.timeframe}}
+													li
+														.field Property Type:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerPropType") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerPropType") {{$root.selectedMessage.consumer.buyerPropType}}
+													li
+														.field Price Range:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerPriceMin && !$root.selectedMessage.consumer.buyerPriceMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerPriceMin && $root.selectedMessage.consumer.buyerPriceMax") {{$root.selectedMessage.consumer.buyerPriceMin | currency : $ : 0}} to {{$root.selectedMessage.consumer.buyerPriceMax | currency : $ : 0}}
+													li
+														.field Bedrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerBedsMin && !$root.selectedMessage.consumer.buyerBedsMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerBedsMin && $root.selectedMessage.consumer.buyerBedsMax") {{$root.selectedMessage.consumer.buyerBedsMin}} to {{$root.selectedMessage.consumer.buyerBedsMax}}
+													li
+														.field Bathrooms:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerBathsMin && !$root.selectedMessage.consumer.buyerBathsMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerBathsMin && $root.selectedMessage.consumer.buyerBathsMax") {{$root.selectedMessage.consumer.buyerBathsMin}} to {{$root.selectedMessage.consumer.buyerBathsMax}}
+													li
+														.field Square Feet:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerSqftMin && !$root.selectedMessage.consumer.buyerSqftMax") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerSqftMin && $root.selectedMessage.consumer.buyerSqftMax") {{$root.selectedMessage.consumer.buyerSqftMin | number : 0}} to {{$root.selectedMessage.consumer.buyerSqftMax | number : 0}}
+													li
+														.field Cities:
+														.value(ng-if="!$root.selectedMessage.consumer.buyerCities") N/A
+														.value(ng-if="$root.selectedMessage.consumer.buyerCities") {{$root.selectedMessage.consumer.buyerCities.join(', ')}}
+											.col-sm-6
+												.section-title
+													h4 Buyer Remarks
+													hr
+												p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedMessage.consumer.buyerRemarks)", ng-if="$root.selectedMessage.consumer.buyerRemarks")
+												.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedMessage.consumer.buyerRemarks") There are no buyer remarks currently available.
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-dismiss="modal") Close
+
+				#messageLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								center(align="center")
+									h4#largeModalLabel.modal-title Loading
+							.modal-body
+								center(align="center")
+									.row
+										.form-group.text-center
+											label.col-sm-12.text-center Loading messages
+												i.fa.fa-spinner.fa-pulse.ml5
+
+				#deletedModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								center(align="center")
+									h4#largeModalLabel.modal-title Success
+							.modal-body
+								center(align="center")
+									.row
+										.form-group.text-center
+											label.col-sm-12.text-center Message deleted!
+
+				#sentModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								center(align="center")
+									h4#largeModalLabel.modal-title Success
+							.modal-body
+								center(align="center")
+									.row
+										.form-group.text-center
+											label.col-sm-12.text-center Message sent!

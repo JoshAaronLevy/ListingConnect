@@ -1,0 +1,46 @@
+doctype
+html(ng-app='app')
+	head
+		meta(charset='utf-8')
+		meta(name='ListingConnect', content='Find The Best Real Estate Agent For You With ListingConnect')
+		meta(name="google-site-verification" content="6wG8NVsNPZWpO4XO_8w7RBifniODWtddYnODziqCgoA")
+		link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
+		link(rel='icon', href='/favicon.ico', type='image/x-icon')
+		style.
+			.ng-cloak, [ng-cloak] {
+				visibility: hidden !impotant;
+			}
+		block title_default
+			title ListingConnect
+
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+		script(src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js')
+		script.
+			var CKEDITOR_BASEPATH = '/ckeditor/'
+		script(src="/js/vendor.js")
+		script(src="//widget.cloudinary.com/global/all.js", type="text/javascript")
+
+		//- Stripe form
+		// script(src="https://checkout.stripe.com/checkout.js")
+
+		link(href="/styles/include.min.css", rel="stylesheet", type="text/css")
+
+		//- link(href="/dreamcodes/pricingtables/css/tsc_pricingtables.css", rel="stylesheet", type="text/css")
+		//- script(src="/dreamcodes/pricingtables/js/tsc_pricingtables.js", type="text/javascript")
+
+		block head
+			// Overridable with `block head` in pages
+
+	body(ng-cloak, ng-controller="MainController")
+		block header
+			include header.jade
+		.clearfix
+		block body
+		.clearfix
+		include footer.jade
+		.clearfix
+
+		block foot
+
+		block scripts
+

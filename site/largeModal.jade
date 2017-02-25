@@ -1,0 +1,13 @@
+#largeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span(aria-hidden="true") &#215;
+          span.sr-only Close
+        h4#largeModalLabel.modal-title Modal title
+      .modal-body
+        p Content goes here.
+      .modal-footer
+        button.btn.btn-rw.btn-default(type="button", data-dismiss="modal") Close
+        button.btn.btn-rw.btn-primary(type="button") Save changes

@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "ListingConnect": {
+      "applicationId": "gp5pTelFu2HAZb4JQcrNVhLVAjmTwn7ysUF8ySSe"
+    },
+    "_default": {
+      "link": "ListingConnect"
+    }
+  }
+}

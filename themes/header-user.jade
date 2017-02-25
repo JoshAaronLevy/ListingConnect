@@ -1,0 +1,143 @@
+.mega-nav(ng-controller="AuthController")
+	.wrapper
+		nav.navbar.navbar-default(role="navigation")
+			.container
+				.navbar-header
+					button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#main-nav")
+						span.sr-only Toggle Navigation
+						i.fa.fa-bars
+					a.navbar-brand.navbar-logo(href="/index.html")
+						img(src="/images/logo-big.png", alt="ListingConnect")
+				#main-nav.navbar-collapse.collapse.navbar-mega-menu
+					ul.nav.navbar-nav.navbar-right.nav-alt(ng-if="$root.agent")
+						li
+							a(href="/agent/leads.html") Leads
+								//- span.label.label-danger.label-main-nav NEW
+						li
+							a(href="/agent/favorites.html") Favorites
+						li
+							a(href="/agent/messages.html") Messages
+						li
+							a(href="/agent/profile.html") Profile
+						li.dropdown
+							a.dropdown-toggle(href="#", data-toggle="dropdown")
+								| {{$root.user.username}}
+								i.fa.fa-angle-down
+							ul.dropdown-menu(role="menu")
+								li
+									a(data-toggle="modal", data-target="#supportModal") Support
+								li
+									a(data-toggle="modal", data-target="#signoutModal") Sign Out
+					ul.nav.navbar-nav.navbar-right.nav-alt(ng-if="$root.consumer")
+						li
+							a(href="/consumer/agents.html") Agents
+								//- span.label.label-danger.label-main-nav NEW
+						li
+							a(href="/consumer/favorites.html") Favorites
+						li
+							a(href="/consumer/messages.html") Messages
+						li
+							a(href="/consumer/profile.html") Profile
+						li.dropdown
+							a.dropdown-toggle(href="#", data-toggle="dropdown")
+								| {{$root.user.username}}
+								i.fa.fa-angle-down
+							ul.dropdown-menu(role="menu")
+								li
+									a(data-toggle="modal", data-target="#supportModal") Support
+								li
+									a(data-toggle="modal", data-target="#signoutModal") Sign Out
+
+		#signoutModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="signoutLabel", aria-hidden="true")
+			.modal-dialog.modal-sm
+				.modal-content
+					.modal-header
+						button.close(type="button", data-dismiss="modal")
+							span(aria-hidden="true") &#215;
+							span.sr-only Close
+						center(align="center")
+							h4#signoutLabel.modal-title Sign Out
+					.modal-body
+						form(role="form", name="frm", ng-submit="$root.logout()")
+							center(align="center")
+								span Are you sure you want to sign out?
+							br
+							.row
+								center(align="center")
+									button.btn.btn-rw.btn-primary(type="submit") Yes
+									button.btn.btn-rw.btn-danger(type="button", data-dismiss="modal") No
+
+		#supportModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="supportLabel", aria-hidden="true")
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						button.close(type="button", data-dismiss="modal")
+							span(aria-hidden="true") &#215;
+							span.sr-only Close
+						center(align="center")
+							h4#supportLabel.modal-title Customer Support
+					.modal-body
+						iframe#contactform123(allowtransparency='true', style='min-height:600px; height:inherit; overflow:auto;', width='100%', name='contactform123', marginwidth='0', marginheight='0', frameborder='0', src='https://www.123contactform.com/my-contact-form-1296453.html')
+						//- .col-md-9
+						//-   .contact-form-wrapper
+						//-     form#contact-form.form-horizontal.margin-bottom-30px(method="post", role="form", novalidate="")
+						//-       .row
+						//-         .col-sm-6
+						//-           .form-group
+						//-             label.control-label(for="contact-name") Name
+						//-             input#contact-name.form-control(type="text", name="name", placeholder="", required="")
+						//-         .col-sm-6
+						//-           .form-group
+						//-             label.control-label(for="contact-email") Email
+						//-             input#contact-email.form-control(type="email", name="email", placeholder="", required="")
+						//-       .row
+						//-         .col-sm-6
+						//-           .form-group
+						//-             label.control-label(for="contact-type") Contact Type
+						//-             select#contact-type.form-control(name="contactType", placeholder="", required="")
+						//-               option(value='') Select
+						//-               option(value='Home Seller') Home Seller
+						//-               option(value='Home Buyer') Home Buyer
+						//-               option(value='Real Estate Agent') Real Estate Agent
+						//-               option(value='Other') Other
+						//-         .col-sm-6
+						//-           .form-group
+						//-             label.control-label(for="message-type") Message Type
+						//-             select#message-type.form-control(name="messageType", placeholder="", required="")
+						//-               option(value='') Select
+						//-               option(value='Sales Inquiry') Sales Inquiry
+						//-               option(value='Tech Support') Tech Support
+						//-               option(value='Suggestion') Suggestion
+						//-               option(value='Other') Other
+						//-       .row
+						//-         .col-sm-12
+						//-           .form-group
+						//-             label.control-label(for="contact-subject") Subject
+						//-             input#contact-subject.form-control(type="text", name="subject", placeholder="Subject")
+						//-       .row
+						//-         .col-sm-12
+						//-           .form-group
+						//-             label.control-label(for="contact-message") Message
+						//-             textarea#contact-message.form-control(name="message", rows="5", cols="30", placeholder="Message*", required="")
+						//-       .row
+						//-         .col-sm-12
+						//-           .form-group
+						//-             button#submit-button.btn.btn-primary(type="submit")
+						//-               i.fa.loading-icon
+						//-               span Submit Message
+						//-           input#msg-submitted(type="hidden", name="msg-submitted", value="true")
+						//- .col-md-3
+						//-   .widget
+						//-     h3.widget-title BUSINESS HOURS
+						//-     ul.list-unstyled
+						//-       li
+						//-         strong.mr3 Monday-Friday:
+						//-         | 8am to 5pm MST
+						//-       li
+						//-         strong.mr3 Saturday:
+						//-         | Email
+						//-       li
+						//-         strong.mr3 Sunday:
+						//-         | Email
+					.modal-footer
+						button.btn.btn-danger(data-toggle="modal") Close

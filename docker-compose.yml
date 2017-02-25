@@ -1,0 +1,24 @@
+nginx:
+  build: ./docker-services/nginx
+  links:
+    - app
+  ports:
+    - "80:80"
+#    - "443:443"
+  volumes_from:
+    - app
+# - /etc/letsencrypt:/etc/letsencrypt
+
+app:
+  environment: 
+    - NODE_ENV=production
+    - NODE_HOSTNAME=listingconnect.com
+    - FACEBOOK_URI=http://listingconnect.com/auth/facebook
+    - FACEBOOK_APP_ID=538863569471826
+    - FACEBOOK_APP_SECRET=64b46a019be801722e5537a37c7ebc5a
+  build: ./
+  ports:
+    - "3000"
+  volumes:
+    - ./_output:/html
+    # - "4433"

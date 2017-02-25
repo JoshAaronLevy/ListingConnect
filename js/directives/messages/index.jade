@@ -1,0 +1,29 @@
+.chat-container.clearfix
+  .chat
+    .chat-header.clearfix
+      .chat-about
+        .col-xs-9.pull-left.text-nowrap(ng-if="$root.selectedConsumer.profileName")
+          h3 
+            | Chat with {{$root.selectedConsumer.profileName}}
+            small(title='message count') {{ $root.currentMessages.length }}
+        .col-xs-2.pull-right.text-center(ng-if="$root.loading === 'Messages'"): b.fa.fa-refresh 
+    .col-xs-12.chat-history
+      ul.list-unstyled
+        li(ng-if="!$root.loading && (!$root.currentMessages || $root.currentMessages.length === 0)"): h4 No Messages Found
+        li.clearfix(ng-repeat="msg in $root.currentMessages")
+          .message-data.text-right(ng-if="msg.sentFrom.objectId === $root.user.objectId")
+            span.message-data-time {{ msg.createdAt | date: 'yyyy-MM-dd h:mm:ss a' }}
+            span.message-data-name From: Me
+            .message.other-message.text-right(ng-if="msg.sentFrom.objectId === $root.user.objectId")
+              | {{msg.message}}
+          .message-data(ng-if="msg.sentFrom.objectId !== $root.user.objectId")
+            span.message-data-name() From: {{$root.selectedConsumer.profileName }}
+            span.message-data-time() {{msg.createdAt | date: 'yyyy-MM-dd h:mm:ss a' }}
+            .message.my-message(ng-if="msg.sentFrom.objectId !== $root.user.objectId")
+              | {{msg.message}}
+      .clearfix
+    .col-xs-11.chat-message
+      input#message(name="message", autocomplete="off" placeholder="Type your message", ng-model="msg")
+    .col-xs-1.chat-message.text-center
+      button.btn.btn-primary(ng-click="send(msg)") Send
+    .col-xs-12: label(ng-if="$root.loading === 'Sending'") Sending...

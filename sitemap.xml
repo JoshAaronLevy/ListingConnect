@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<url>
+  <loc>http://www.listingconnect.com/</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/index.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/signup.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/agent/profile.html</loc>
+  <lastmod>2016-04-18T08:14:07+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/consumer/profile.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/pricing.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/contact.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/terms.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/login.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/agent/leads.html</loc>
+  <lastmod>2016-04-18T08:14:07+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/agent/favorites.html</loc>
+  <lastmod>2016-04-18T08:14:07+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/agent/messages.html</loc>
+  <lastmod>2016-04-18T08:14:07+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/consumer/agents.html</loc>
+  <lastmod>2016-04-18T08:14:07+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/consumer/favorites.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.listingconnect.com/consumer/messages.html</loc>
+  <lastmod>2016-04-18T08:14:08+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.64</priority>
+</url>
+</urlset>

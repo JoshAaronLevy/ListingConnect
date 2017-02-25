@@ -1,0 +1,184 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-blog.jade
+
+block scripts
+	script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	.page-content
+		.container.pt20
+			.row
+				.col-md-9
+					// BLOG SINGLE
+					.blog.single.full-thumbnail
+						// blog post
+						article.entry-post
+							header.entry-header
+								h2.entry-title
+									a(href='blog-single.html') Objectively Disseminate Customer Directed E-commerce
+								.meta-line.clearfix
+									//- .meta-author-category.pull-left
+										span.post-author
+											| by
+											a(href='#') John Doe
+										span.post-category
+											| In:
+											a(href='#') Business
+											| ,
+											a(href='#') Creative
+											| ,
+											a(href='#') Media
+									//- .meta-tag-comment.pull-right
+										span.post-tags
+											i.fa.fa-tag
+											a(href='#') story
+											| ,
+											a(href='#') inspiration
+											| ,
+											a(href='#') creative
+										span.post-comment
+											i.fa.fa-comments
+											a(href='#') 3 Comments
+							.entry-content.clearfix
+								figure.featured-image
+									.post-date-info.clearfix
+										span.post-month DEC
+										span.post-date 11
+										span.post-year 2014
+									//- img.img-responsive(src='assets/img/blog/buildings.jpg', alt='featured-image')
+								.excerpt
+									p
+										| Globally orchestrate high-payoff vortals whereas an expanded array of schemas. Distinctively actualize visionary niche markets via covalent human capital. Proactively reinvent team building customer service with ethical e-markets. Professionally utilize mission-critical technology whereas competitive solutions. Completely underwhelm go forward leadership without maintainable initiatives. Objectively disseminate customer directed e-commerce with prospective partnerships. Collaboratively actualize revolutionary total linkage before orthogonal catalysts for change. Appropriately facilitate optimal meta-services whereas end-to-end solutions...
+									p
+										| Holisticly synthesize adaptive expertise before distinctive core competencies. Intrinsicly leverage other's compelling customer service after impactful manufactured products. Compellingly disintermediate impactful vortals without scalable networks. Conveniently monetize interdependent infrastructures through frictionless data. Energistically visualize best-of-breed niche markets before visionary synergy.
+									p
+										| Phosfluorescently streamline enabled architectures without enterprise-wide alignments. Appropriately synergize parallel schemas without installed base value. Energistically embrace maintainable e-tailers whereas unique processes. Uniquely foster accurate e-markets via synergistic e-business. Dynamically communicate enterprise action items before ubiquitous customer service.
+									blockquote
+										p
+											| Professionally revolutionize business channels and interactive imperatives. Competently visualize virtual collaboration and idea-sharing after bleeding-edge testing procedures. Monotonectally implement synergistic schemas vis-a-vis fully tested metrics.
+									p
+										| Dramatically communicate goal-oriented niche markets vis-a-vis adaptive users. Objectively leverage other's dynamic methodologies whereas worldwide human capital. Uniquely leverage existing distributed mindshare and fully tested sources. Enthusiastically cultivate exceptional experiences for 2.0 systems. Intrinsicly embrace diverse channels via innovative synergy. Proactively scale multimedia based functionalities for worldwide niche markets. Proactively network alternative vortals and proactive solutions. Competently disseminate adaptive strategic theme areas vis-a-vis exceptional solutions. Authoritatively revolutionize frictionless synergy with robust intellectual capital. Dynamically actualize high-payoff users and magnetic expertise. Energistically plagiarize fully researched alignments and scalable relationships. Interactively predominate seamless infomediaries vis-a-vis pandemic results. Seamlessly deploy viral products without an expanded array of experiences. Phosfluorescently morph revolutionary partnerships after superior services. Quickly embrace front-end benefits with excellent internal or "organic" sources.
+									p
+										| Globally generate pandemic e-services after frictionless content. Rapidiously evolve dynamic strategic theme areas whereas backward-compatible networks. Synergistically communicate best-of-breed partnerships before cross functional partnerships. Seamlessly evisculate corporate architectures and cost effective web services. Enthusiastically maintain B2C customer service after progressive models. Synergistically procrastinate magnetic infomediaries through granular services.
+						// end blog post
+						hr
+						// social sharing
+						.social-sharing.clearfix
+							h3.section-heading.pull-left Share This Story:
+							ul.list-inline.sharing-tools
+								li
+									a.facebook-bg(href='#')
+										i.fa.fa-facebook
+								li
+									a.twitter-bg(href='#')
+										i.fa.fa-twitter
+								//- li
+									a.rss-bg(href='#')
+										i.fa.fa-rss
+						hr
+						//- section.author-info
+							h3.section-heading About The Author
+							.media
+								a.media-left(href='#')
+									img.img-circle(src='assets/img/user2.png', alt='Avatar')
+								.media-body
+									a.author-name(href='#') Antonius
+									p
+										| Synergistically incentivize innovative information after intermandated leadership. Conveniently
+										a(href='#') transition high standards
+										|  in e-tailers vis-a-vis ethical convergence. Conveniently transform client-focused quality vectors after inexpensive benefits. Dynamically predominate backward-compatible process. Appropriately incentivize cross-media expertise for transparent users. Energistically supply ubiquitous scenarios rather than client-based resources. Interactively seize user friendly opportunities whereas reliable infrastructures. Completely extend extensible ideas before alternative customer service.
+						//- hr
+						//- section
+							h3.section-heading Related Articles
+							ul.list-unstyled.related-post-list.row
+								li.col-md-4
+									a(href='#')
+										img.img-responsive(src='assets/img/blog/people-med.jpg', alt='Related Post')
+									a.post-title(href='#') Monotonectally Pursue Extensive Process iImprovements
+								li.col-md-4
+									a(href='#')
+										img.img-responsive(src='assets/img/blog/buildings-med.jpg', alt='Related Post')
+									a.post-title(href='#') Progressively Maximize Multidisciplinary Innovation Before Proactive E-markets
+								li.col-md-4
+									a(href='#')
+										img.img-responsive(src='assets/img/blog/balloon-med.jpg', alt='Related Post')
+									a.post-title(href='#') Phosfluorescently conceptualize team
+						//- hr
+						// comments
+						article.comments
+							h3.section-heading Comments (3)
+							ul.media-list
+								li.media
+									a.media-left(href='#')
+										img.avatar(src='assets/img/user1.png', alt='avatar')
+									.media-body
+										h4.media-heading.comment-author
+											a(href='#') John Doe
+										span.timestamp.text-muted Dec 11, 2014 12:30 PM
+										p
+											| Conveniently administrate prospective e-tailers via global initiatives. Appropriately transition market-driven internal or "organic" sources and turnkey synergy. Appropriately aggregate extensible technologies with high-payoff functionalities. Intrinsicly deliver emerging initiatives via cross functional niches. Interactively embrace enterprise human capital before an expanded array of growth strategies. Rapidiously network.
+										p
+											a(href='#')
+												i.fa.fa-reply
+												|  Reply
+										hr
+										.media.comment-by-author
+											a.media-left(href='#')
+												img.avatar(src='assets/img/user2.png', alt='avatar')
+											.media-body
+												h4.media-heading.comment-author
+													a(href='#') Antonius
+												span.timestamp.text-muted Dec 12, 2014 18:40 PM
+												p
+													| Energistically empower seamless systems rather than granular web-readiness. Conveniently foster accurate total linkage vis-a-vis timely interfaces. Synergistically repurpose visionary.
+												p
+													a(href='#')
+														i.fa.fa-reply
+														|  Reply
+												hr
+									.media.child
+										a.media-left(href='#')
+											span.avatar.anonymous
+												i.fa.fa-user
+										.media-body
+											h4.media-heading.comment-author
+												a(href='#') Anonymous
+											span.timestamp.text-muted 8 hours ago
+											p
+												| Compellingly incentivize pandemic products for holistic total linkage. Holisticly facilitate bleeding-edge "outside the box" thinking rather than an expanded array of schemas. Phosfluorescently harness empowered infomediaries via strategic growth strategies. Collaboratively innovate proactive products rather than intuitive relationships. Professionally redefine cooperative technology rather than.
+											p
+												a(href='#')
+													i.fa.fa-reply
+													|  Reply
+						// end comments
+						hr
+						// comment form
+						section.comment-form.margin-bottom
+							h3.section-heading Leave A Comment
+							p.heading Required fields are marked *. Your email will not be published or shared.
+							form.form-horizontal.comment-form(role='form')
+								.row
+									.col-sm-6
+										.form-group
+											label.control-label.sr-only(for='comment-name') Name
+											input#comment-name.form-control(type='text', placeholder='* Name')
+									.col-sm-6
+										.form-group
+											label.control-label.sr-only(for='comment-email') Email
+											input#comment-email.form-control(type='email', placeholder='* Email')
+								.form-group
+									label.control-label.sr-only(for='comment-website') Website
+									.col-sm-12
+										input#comment-website.form-control(type='url', placeholder='Website')
+								.form-group
+									label.control-label.sr-only(for='comment-text') Comments
+									.col-sm-12
+										textarea#comment-text.form-control(name='comment-text', rows='5', cols='30', placeholder='* Your comments')
+								.form-group
+									.col-sm-12
+										button.btn.btn-primary(type='submit') Submit Comment
+						// end comment form
+					// END BLOG SINGLE
+				include sidebar

@@ -1,0 +1,349 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-user.jade
+
+block scripts
+	script(src="/js/apps/consumer/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	script.
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-50168733-1', 'auto');
+		ga('send', 'pageview');
+	// Google Tag Manager
+	noscript
+		iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+	script.
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+	// End Google Tag Manager
+	.wrapper
+		center(align="center")
+			script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+			// Consumer Matches
+			ins.adsbygoogle(style='display:inline-block;width:728px;height:90px', data-ad-client='ca-pub-4950211747544966', data-ad-slot='5124731936')
+			script.
+				(adsbygoogle = window.adsbygoogle || []).push({});
+	.wrapper
+		.container
+			div(ng-controller="FavoriteController")
+				.col-md-12
+					center(align="center")
+						h2.name Favorites
+						br
+						.alert.alert-danger.alert-danger-rw.alert-dismissible(role="alert", ng-if="favorite && (favorite.length < 1)")
+							button.close(type="button", data-dismiss="alert")
+								span(aria-hidden="true") &#215;
+								span.sr-only Close
+							| You have not favorited any Agents yet. Please click the 'Agents' link at the top of the page to view and save matching Agents in your area.
+					.lead-modal
+						ul.cd-items.cd-container
+							li.cd-item.col-md-4(ng-repeat="favorite in favorites | orderBy:'createdAt':true", ng-if="favorite.consumerSaved !== 'false'")
+								.boxed-content
+									center(align="center")
+										img.match-list(ng-if="favorite.agent.photo", ng-src="{{favorite.agent.photo}}", alt="Agent Photo")
+										img.match-list(ng-if="!favorite.agent.photo", src="/images/photo-unavailable.jpg", alt="Agent Photo")
+									h2.boxed-content-title {{favorite.agent.displayName}}
+									h2.boxed-content-subtitle(ng-if="favorite.agent.companyName") {{favorite.agent.companyName}}
+									h2.boxed-content-subtitle(ng-if="!favorite.agent.companyName") Company N/A
+									//- section
+									ul.list-unstyled.project-detail-list.text-left
+										li(ng-if="favorite.agent.subscription === 'Promo'")
+											.subscription-status
+												i.fa.fa-check.true
+												.premium-true Premium Agent
+													//- i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="If an Agent is a Premium Agent, you have the ability to message them privately and view their full profile details.")
+										li(ng-if="favorite.agent.subscription !== 'Promo'")
+											.subscription-status
+												i.fa.fa-times.false
+												.premium-false Premium Agent
+													//- i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="If an Agent is a Premium Agent, you have the ability to message them privately and view their full profile details.")
+										li
+											.field-box Location:
+											.value-box(ng-if="!favorite.agent.city && favorite.agent.state && !favorite.agent.zip") N/A, {{favorite.agent.state}} N/A
+											.value-box(ng-if="!favorite.agent.city && favorite.agent.state && favorite.agent.zip") N/A, {{favorite.agent.state}} {{favorite.agent.zip}}
+											.value-box(ng-if="favorite.agent.city && favorite.agent.state && !favorite.agent.zip") {{favorite.agent.city}}, {{favorite.agent.state}} N/A
+											.value-box(ng-if="favorite.agent.city && favorite.agent.state && favorite.agent.zip") {{favorite.agent.city}}, {{favorite.agent.state}} {{favorite.agent.zip}}
+									center(align="center")
+										a.btn.btn-primary.mr10(data-toggle="modal", data-target="#agentDetailsModal", ng-click="$root.selectedFave = favorite")
+											i.fa.fa-list-alt.button-icon
+											| Details
+										a.btn.btn-danger.mr7(data-toggle="modal", data-target="#removeFaveModal", ng-click="$root.selectedFave = favorite")
+											i.fa.fa-ban.button-icon
+											| Remove
+										//- a.btn.btn-danger.mr10(ng-disabled="favorite.agent.favorite === true")
+										//-   i.fa.fa-heart.button-icon
+										//-   | In Favorites
+										a.btn.btn-success.mr10(data-toggle="modal", data-target="#sendMessageModal", ng-click="$root.selectedFave = favorite")
+											i.fa.fa-envelope.button-icon
+											| Message
+
+					#faveLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Loading
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Loading favorite Real Estate Agents
+													i.fa.fa-spinner.fa-pulse.ml5
+
+					#removeFaveModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									button.close(type="button", data-dismiss="modal")
+										span(aria-hidden="true") &#215;
+										span.sr-only Close
+									center(align="center")
+										h4#largeModalLabel.modal-title Remove Favorite
+								.modal-body
+									form(role="removeAgentForm", ng-submit="removeFave(selectedFave)")
+										center(align="center")
+											.row
+												.form-group.text-center
+													label.col-sm-12.text-center Are you sure you would like to remove {{$root.selectedFave.agent.displayName}} from your favorites?
+											.row
+											center(align="center")
+												.row
+													br
+													button.btn.btn-primary.mr10(type="submit") Yes
+													button.btn.btn-danger(data-dismiss="modal") No
+								//- .modal-footer
+								//- 	button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+					#removeSuccessModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Success
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Agent successfully removed from Favorites!
+
+					#sendMessageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									button.close(type="button", data-dismiss="modal")
+										span(aria-hidden="true") &#215;
+										span.sr-only Close
+									center(align="center")
+										h4#largeModalLabel.modal-title Send Message
+								.modal-body
+									form(role="newMsgForm", ng-submit="messageAgent()")
+										center(align="center")
+											.row
+												.form-group.text-center
+													label.col-sm-12.text-center Send to {{$root.selectedFave.agent.displayName}}
+											.row
+												.col-xs-10
+													textarea.form-control(placeholder='Message', rows='4', ng-model="$root.message.message")
+												//- input#message.form-control(type="text", name="message", ng-model="$root.message.message", ng-required="false", placeholder="Message")
+												center(align="center")
+													br
+													button.btn.btn-primary.mr80.mt15(type="submit") Send
+													//- button.btn.btn-danger(data-dismiss="modal") Close
+											.row
+												center(align="center")
+													.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+								.modal-footer
+									button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+					#messageSuccessModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Success
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Message sent!
+
+					#agentDetailsModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-body
+									center(align="center")
+										.modal-title {{$root.selectedFave.agent.displayName}}
+										.modal-subtitle {{$root.selectedFave.agent.companyName}}
+									.single-product
+										.row
+											.col-md-3
+												#product-images.carousel.slide.product-images(data-ride="carousel", data-interval="false")
+													.carousel-inner
+														.item.active(ng-if="!$root.selectedFave.agent.photo")
+															img.img-responsive.agent-photo(src="/images/photo-unavailable.jpg", alt="Agent Photo")
+														.item.active(ng-if="$root.selectedFave.agent.photo")
+															img.img-responsive.agent-photo(ng-src="{{$root.selectedFave.agent.photo}}", alt="Agent Photo")
+												.clearfix
+											.col-md-6
+												section.product-info.no-margin
+													table.table.table-striped
+														tr
+															th.col-xs-4 Works In:
+															td(ng-if="!$root.selectedFave.agent.cities") N/A
+															td(ng-if="$root.selectedFave.agent.cities") {{$root.selectedFave.agent.cities.join(', ')}}
+														tr
+															th.col-xs-4 Specialties:
+															td(ng-if="!$root.selectedFave.agent.specialties") N/A
+															td(ng-if="$root.selectedFave.agent.specialties") {{$root.selectedFave.agent.specialties.join(', ')}}
+														tr
+															th.col-xs-4 Agent Since:
+															td(ng-if="!$root.selectedFave.agent.agentSince") N/A
+															td(ng-if="$root.selectedFave.agent.agentSince") {{$root.selectedFave.agent.agentSince}}
+														tr
+															th.col-xs-4 Direct Phone:
+															td.blue(ng-if="$root.selectedFave.agent.subscription !== 'Promo'") Premium Agents Only
+															td(ng-if="$root.selectedFave.agent.subscription === 'Promo' && !$root.selectedFave.agent.directPhone") N/A
+															td(ng-if="$root.selectedFave.agent.subscription === 'Promo' && $root.selectedFave.agent.directPhone") {{$root.selectedFave.agent.directPhone}}
+														tr
+															th.col-xs-4 Email:
+															td.blue(ng-if="$root.selectedFave.agent.subscription !== 'Promo'") Premium Agents Only
+															td(ng-if="$root.selectedFave.agent.subscription === 'Promo' && !$root.selectedFave.agent.companyEmail") N/A
+															td(ng-if="$root.selectedFave.agent.subscription === 'Promo' && $root.selectedFave.agent.companyEmail") {{$root.selectedFave.agent.companyEmail}}
+														tr
+															th.col-xs-4 Connect:
+															td.blue(ng-if="$root.selectedFave.agent.subscription !== 'Promo'") Premium Agents Only
+															td(ng-if="$root.selectedFave.agent.subscription === 'Promo'")
+																a.fa.fa-globe.fa-lg(ng-href="{{$root.selectedFave.agent.website}}", target="_blank", title="{{$root.selectedFave.agent.website}}", ng-if="$root.selectedFave.agent.website")
+																i.fa.fa-globe.fa-lg.invalid(title="Website URL Not Yet Added", ng-if="!$root.selectedFave.agent.website")
+																a.fa.fa-linkedin-square.fa-lg(ng-href="{{$root.selectedFave.agent.linkedIn}}", target="_blank", title="{{$root.selectedFave.agent.linkedIn}}", ng-if="$root.selectedFave.agent.linkedIn")
+																i.fa.fa-linkedin-square.fa-lg.invalid(title="LinkedIn Profile Not Yet Added", ng-if="!$root.selectedFave.agent.linkedIn")
+																a.fa.fa-facebook-square.fa-lg(ng-href="{{$root.selectedFave.agent.facebook}}", target="_blank", title="{{$root.selectedFave.agent.facebook}}", ng-if="$root.selectedFave.agent.facebook")
+																i.fa.fa-facebook-square.fa-lg.invalid(title="Facebook Profile Not Yet Added", ng-if="!$root.selectedFave.agent.facebook")
+																a.fa.fa-twitter-square.fa-lg(ng-href="{{$root.selectedFave.agent.twitter}}", target="_blank", title="{{$root.selectedFave.agent.twitter}}", ng-if="$root.selectedFave.agent.twitter")
+																i.fa.fa-twitter-square.fa-lg.invalid(title="Twitter Profile Not Yet Added", ng-if="!$root.selectedFave.agent.twitter")
+												//- center(align="center")
+												//- 	a.btn.btn-danger.btn-subtitle.mr10(ng-click="faveLead(favorite)")
+												//- 		i.fa.fa-heart.button-icon
+												//- 		| Favorite
+												//- 	a.btn.btn-success.btn-subtitle(ng-click="messageAgent(favorite)")
+												//- 		i.fa.fa-envelope.button-icon
+												//- 		| Message
+											.col-md-3
+												#product-images.carousel.slide.product-images(data-ride="carousel", data-interval="false")
+													.carousel-inner
+														.item.active(ng-if="!$root.selectedFave.agent.logo")
+															img.img-responsive.agent-logo(src="/images/logo-unavailable.jpg", alt="Agent Logo")
+														.item.active(ng-if="$root.selectedFave.agent.logo")
+															img.img-responsive.agent-logo(ng-src="{{$root.selectedFave.agent.logo}}", alt="Agent Logo")
+										.bottom
+											.custom-tabs-line.tabs-line-bottom
+												ul.nav.nav-pills.tabs-iconized(role="tablist")
+													li.active
+														a(href="#summary", role="tab", data-toggle="tab") Professional Summary
+													li
+														a(href="#specialties", role="tab", data-toggle="tab") Specialties
+													li
+														a(href="#contactDetails", role="tab", data-toggle="tab") Contact Details
+													//- li
+													//-   a(href="#reviews", role="tab", data-toggle="tab") Agent Reviews
+											.tab-content.clearfix
+												#summary.tab-pane.fade.in.active
+													.col-sm-10.col-sm-offset-1
+														.section-title
+															h4 Professional Summary
+															hr
+														p.mt20.pb50(ng-bind-html="trustAsHtml($root.selectedFave.agent.profile)", ng-if="$root.selectedFave.agent.profile")
+														.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedFave.agent.profile") No professional summary available.
+												#specialties.tab-pane.fade.in
+													.col-sm-10.col-sm-offset-1
+														.section-title
+															h4 Agent Specialties
+															hr
+														.col-sm-8.col-sm-offset-2
+															section
+																ul.list-unstyled.project-detail-list.mt20
+																	li
+																		strong Works In:
+																		p(ng-if="!$root.selectedFave.agent.cities") N/A
+																		p(ng-if="$root.selectedFave.agent.cities") {{$root.selectedFave.agent.cities.join(', ')}}
+																	li
+																		strong Specialties:
+																		p(ng-if="!$root.selectedFave.agent.specialties") N/A
+																		p(ng-if="$root.selectedFave.agent.specialties") {{$root.selectedFave.agent.specialties.join(', ')}}
+																	li
+																		strong Languages:
+																		p(ng-if="!$root.selectedFave.agent.languages") N/A
+																		p(ng-if="$root.selectedFave.agent.languages") {{$root.selectedFave.agent.languages.join(', ')}}
+												#contactDetails.tab-pane.fade.in
+													.col-sm-10.col-sm-offset-1
+														.section-title
+															h4 Contact Details
+															hr
+														.col-sm-8.col-sm-offset-2
+															ul.profile-table
+																li
+																	.field Company:
+																	.value(ng-if="!$root.selectedFave.agent.company") N/A
+																	.value(ng-if="$root.selectedFave.agent.company") {{$root.selectedFave.agent.companyName}}
+																li
+																	.field Address:
+																	.value(ng-if="!$root.selectedFave.agent.address1") N/A
+																	.value(ng-if="$root.selectedFave.agent.address1 && !$root.selectedFave.agent.address2") {{$root.selectedFave.agent.address1}}
+																	.value(ng-if="$root.selectedFave.agent.address1 && $root.selectedFave.agent.address2") {{$root.selectedFave.agent.address1}}, {{$root.selectedFave.agent.address2}}
+																li
+																	.field City, State Zip:
+																	.value(ng-if="!$root.selectedFave.agent.city && !$root.selectedFave.agent.state && !$root.selectedFave.agent.zip") N/A
+																	.value(ng-if="!$root.selectedFave.agent.city && $root.selectedFave.agent.state && $root.selectedFave.agent.zip") N/A, {{$root.selectedFave.agent.state}} {{$root.selectedFave.agent.zip}}
+																	.value(ng-if="!$root.selectedFave.agent.city && $root.selectedFave.agent.state && !$root.selectedFave.agent.zip") N/A, {{$root.selectedFave.agent.state}} N/A
+																	.value(ng-if="$root.selectedFave.agent.city && $root.selectedFave.agent.state && !$root.selectedFave.agent.zip") {{$root.selectedFave.agent.city}}, {{$root.selectedFave.agent.state}} N/A
+																	.value(ng-if="$root.selectedFave.agent.city && $root.selectedFave.agent.state && $root.selectedFave.agent.zip") {{$root.selectedFave.agent.city}}, {{$root.selectedFave.agent.state}} {{$root.selectedFave.agent.zip}}
+																li(ng-if="$root.selectedFave.agent.subscription !== 'Promo'")
+																	.field Email:
+																	.value Premium Agents Only
+																li(ng-if="$root.selectedFave.agent.subscription === 'Promo'")
+																	.field Email:
+																	.value(ng-if="!$root.selectedFave.agent.companyEmail") N/A
+																	.value(ng-if="$root.selectedFave.agent.companyEmail") {{$root.selectedFave.agent.companyEmail}}
+																li(ng-if="$root.selectedFave.agent.subscription !== 'Promo'")
+																	.field Office Phone:
+																	.value Premium Agents Only
+																li(ng-if="$root.selectedFave.agent.subscription === 'Promo'")
+																	.field Office Phone:
+																	.value(ng-if="!$root.selectedFave.agent.officePhone") N/A
+																	.value(ng-if="$root.selectedFave.agent.officePhone") {{$root.selectedFave.agent.officePhone}}
+																li(ng-if="$root.selectedFave.agent.subscription !== 'Promo'")
+																	.field Direct Phone:
+																	.value Premium Agents Only
+																li(ng-if="$root.selectedFave.agent.subscription === 'Promo'")
+																	.field Direct Phone:
+																	.value(ng-if="!$root.selectedFave.agent.directPhone") N/A
+																	.value(ng-if="$root.selectedFave.agent.directPhone") {{$root.selectedFave.agent.directPhone}}
+																li(ng-if="$root.selectedFave.agent.subscription !== 'Promo'")
+																	.field Connect:
+																	.value Premium Agents Only
+																li(ng-if="$root.selectedFave.agent.subscription === 'Promo'")
+																	.field Connect:
+																	.value
+																		a.fa.fa-globe.fa-lg(ng-href="{{$root.selectedFave.agent.website}}", target="_blank", title="{{$root.selectedFave.agent.website}}", ng-if="$root.selectedFave.agent.website")
+																		i.fa.fa-globe.fa-lg.invalid(title="Website URL Not Yet Added", ng-if="!$root.selectedFave.agent.website")
+																		a.fa.fa-linkedin-square.fa-lg(ng-href="{{$root.selectedFave.agent.linkedIn}}", target="_blank", title="{{$root.selectedFave.agent.linkedIn}}", ng-if="$root.selectedFave.agent.linkedIn")
+																		i.fa.fa-linkedin-square.fa-lg.invalid(title="LinkedIn Profile Not Yet Added", ng-if="!$root.selectedFave.agent.linkedIn")
+																		a.fa.fa-facebook-square.fa-lg(ng-href="{{$root.selectedFave.agent.facebook}}", target="_blank", title="{{$root.selectedFave.agent.facebook}}", ng-if="$root.selectedFave.agent.facebook")
+																		i.fa.fa-facebook-square.fa-lg.invalid(title="Facebook Profile Not Yet Added", ng-if="!$root.selectedFave.agent.facebook")
+																		a.fa.fa-twitter-square.fa-lg(ng-href="{{$root.selectedFave.agent.twitter}}", target="_blank", title="{{$root.selectedFave.agent.twitter}}", ng-if="$root.selectedFave.agent.twitter")
+																		i.fa.fa-twitter-square.fa-lg.invalid(title="Twitter Profile Not Yet Added", ng-if="!$root.selectedFave.agent.twitter")
+												//- #reviews.tab-pane.fade.in
+												//-   .section-title
+												//-     h4 Agent Reviews
+												//-   p
+												//-     | Distinctively transition innovative resources after compelling human capital. Synergistically provide access to turnkey e-services whereas scalable leadership. Assertively engage next-generation metrics via high-payoff total linkage. Conveniently reintermediate extensible ideas vis-a-vis efficient action favorites.
+								.modal-footer
+									button.btn.btn-rw.btn-danger(data-dismiss="modal") Close

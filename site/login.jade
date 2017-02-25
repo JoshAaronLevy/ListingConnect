@@ -1,0 +1,43 @@
+extends ../themes/default.jade
+
+block scripts
+  script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+  .page-content
+    .shop-main.login(ng-controller='AuthController')
+      .container
+        .row
+          center(align="center")
+            .col-sm-4.col-sm-offset-4
+              .account-box.login-box.box-with-help
+                h3.text-center Log In
+                form.form-horizontal.padding-10(role="form", name="frm", ng-submit="login(username, password)")
+                  .form-group
+                    label.control-label.sr-only(for="inputEmail") Email
+                    .col-sm-12
+                      .input-group
+                        span.input-group-addon
+                          i.fa.fa-envelope
+                        input#inputEmail.form-control(type="email", ng-model="username", name="email", placeholder="Email", ng-required="true")
+                  .form-group
+                    label.control-label.sr-only(for="inputPassword") Password
+                    .col-sm-12
+                      .input-group
+                        span.input-group-addon
+                          i.fa.fa-lock
+                        input#inputPassword.form-control(type="password", ng-model="password", name="password", ng-minlength="4", placeholder="Password", ng-required="true")
+                  .form-group.text-left
+                    .col-sm-12
+                      label.fancy-checkbox
+                        input(type="checkbox")
+                        span Remember me
+                  .form-group
+                    .col-xs-6
+                      button.btn.btn-primary.btn-block(type="submit", ng-disabled="!username || !password")
+                        i.fa.fa-sign-in.mr5
+                        | Log In
+                    .col-xs-6
+                      a.btn.btn-danger.btn-block(href="/signup.html")
+                        i.fa.fa-edit.mr5
+                        | Sign Up

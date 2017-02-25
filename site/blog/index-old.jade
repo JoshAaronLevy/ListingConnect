@@ -1,0 +1,178 @@
+extends ../../themes/default.jade
+
+block scripts
+	script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	.page-content
+		.container
+			script.
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				ga('create', 'UA-50168733-1', 'auto');
+				ga('send', 'pageview');
+			// Google Tag Manager
+			noscript
+				iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+			script.
+				(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+			// End Google Tag Manager
+			.col-xs-12
+				section.mt40.mb40
+					.row
+						.col-sm-8
+							.blog-post.mb40
+								img.img-responsive.full-width(src='/images/backgrounds/stock10.jpg', alt='')
+								.blog-post-holder
+									ul.list-inline.posted-info
+										li
+											| By
+											a(href='#') Denis Samardjiev
+										li
+											| In
+											a(href='#') Design
+										li Posted January 1, 2015
+									hr.mt15.mb10(align='left', style='width:50px;')
+									h2
+										a(href='/blog/post-sample.html') This is the offical post of the blog
+									p
+										| Nullam elementum tincidunt massa, a pulvinar leo ultricies ut. Ut fringilla lectus tellus, imperdiet molestie est volutpat at. Sed viverra cursus nibh, sed consectetur ipsum sollicitudin sed. Cras erat est, euismod id congue sed, sollicitudin sed odio. Nullam non metus in mi rhoncus efficitur...
+									a.btn.btn-rw.btn-primary.mt10.mb20(href='/blog/post-sample.html') Read more
+							.blog-post.mb40
+								img.img-responsive.full-width(src='/images/backgrounds/stock11.jpg', alt='')
+								.blog-post-holder
+									ul.list-inline.posted-info
+										li
+											| By
+											a(href='#') Denis Samardjiev
+										li
+											| In
+											a(href='#') Design
+										li Posted January 1, 2015
+									hr.mt15.mb10(align='left', style='width:50px;')
+									h2
+										a(href='#') Another post about something, seaguls
+									p
+										| Nullam elementum tincidunt massa, a pulvinar leo ultricies ut. Ut fringilla lectus tellus, imperdiet molestie est volutpat at. Sed viverra cursus nibh, sed consectetur ipsum sollicitudin sed. Cras erat est, euismod id congue sed, sollicitudin sed odio. Nullam non metus in mi rhoncus efficitur...
+									a.btn.btn-rw.btn-primary.mt10.mb20(href='#') Read more
+							nav.text-center
+								ul.pagination.no-margin
+									li
+										a(href='#', aria-label='Previous')
+											span(aria-hidden='true') «
+									li.active
+										a(href='#') 1
+									li
+										a(href='#') 2
+									li
+										a(href='#') 3
+									li
+										a(href='#') 4
+									li
+										a(href='#') 5
+									li
+										a(href='#', aria-label='Next')
+											span(aria-hidden='true') »
+						// Sidebar
+						.col-sm-4
+							.content-box.content-box-bordered.mt30-xs.mb30
+								span.ion-beaker.bordered-icon-sm
+								h4.pt15 Our Blog
+								p.no-margin
+									| Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Integer a elit turpis. Phasellus non varius mi.
+							.blog-heading
+								h3 About
+							p.mb30
+								| Vivamus quis est a metus tincidunt viverra. Morbi condimentum tempor libero at cursus. Etiam sollicitudin venenatis arcu id vulputate. Phasellus in pharetra lorem, non suscipit mauris.
+							ul.nav.nav-tabs(role='tablist')
+								li.active
+									a(href='#posts', role='tab', data-toggle='tab') Posts
+								li
+									a(href='#info', role='tab', data-toggle='tab') Info
+							.tab-content.mb30
+								#posts.tab-pane.in.active
+									ul.media-list
+										li.media
+											a.pull-left(href='#')
+												img.media-object(src='http://lorempixel.com/output/city-q-c-80-80-5.jpg', width='80', height='80', alt='image')
+											.media-body
+												p.media-heading
+													a(href='#') Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero
+												small
+													| 5 Jan, 2015
+													br
+													em
+														a(href='#') Web,
+														a(href='#') Webdesign
+										li.media
+											a.pull-left(href='#')
+												img.media-object(src='http://lorempixel.com/output/technics-q-c-80-80-9.jpg', width='80', height='80', alt='image')
+											.media-body
+												p.media-heading
+													a(href='#') Lorem ipsum dolor sit amet in consectetur adipisicing
+												small
+													| 17 Jan, 2015
+													br
+													em
+														a(href='#') Artificial Intelligence
+										li.media
+											a.pull-left(href='#')
+												img.media-object(src='http://lorempixel.com/output/animals-q-c-80-80-3.jpg', width='80', height='80', alt='image')
+											.media-body
+												p.media-heading
+													a(href='#') Sit amet consectetur adipisicing elit incidunt minus
+												small
+													| 23 Jan, 2015
+													br
+													em
+														a(href='#') Art,
+														a(href='#') Lifestyles
+								#info.tab-pane
+									| Donec tristique dignissim nisi, quis fermentum quam. Sed turpis ipsum, tempor vel malesuada ac, pharetra eu nunc. Aliquam condimentum mauris eget justo aliquam, in rhoncus libero egestas.
+									a.btn.btn-rw.btn-primary.btn-sm.mt10(href='pages-about-1.html') About
+							script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+							// Blog Home
+							ins.adsbygoogle(style='display:inline-block;width:300px;height:600px', data-ad-client='ca-pub-4950211747544966', data-ad-slot='2750871536')
+							script.
+								(adsbygoogle = window.adsbygoogle || []).push({});
+							//- .blog-heading
+							//- 	h3 Recent Posts
+							//- ul.list-unstyled.latest-posts
+							//- 	li
+							//- 		h3.no-margin
+							//- 			a(href='#') Wireframe for the news view...
+							//- 		small
+							//- 			| 5 Jan, 2015 /
+							//- 			a(href='#') Web,
+							//- 			a(href='#') Webdesign
+							//- 		p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam odio leo.
+							//- 	li
+							//- 		h3.no-margin
+							//- 			a(href='#') It is a long established fact that a reader
+							//- 		small
+							//- 			| 17 Jan, 2015 /
+							//- 			a(href='#') Artificial Intelligence
+							//- 		p Pellentesque efficitur blandit dui, porta cursus velit imperdiet sit amet.
+							//- 	li
+							//- 		h3.no-margin
+							//- 			a(href='#') The point of using Lorem Ipsum
+							//- 		small
+							//- 			| 19 Jan, 2015 /
+							//- 			a(href='#') Hi-Tech,
+							//- 			a(href='#') Technology
+							//- 		p
+							//- 			| Phasellus ullamcorper pellentesque ex. Cras venenatis elit orci, vitae dictum elit egestas a. Nunc nec auctor mauris, semper scelerisque nibh.
+							//- 	li
+							//- 		h3.no-margin
+							//- 			a(href='#') Many desktop publishing packages...
+							//- 		small
+							//- 			| 23 Jan, 2015 /
+							//- 			a(href='#') Art,
+							//- 			a(href='#') Lifestyles
+							//- 		p.no-border Integer vehicula sed justo ac dapibus. In sodales nunc non varius accumsan.

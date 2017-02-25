@@ -1,0 +1,150 @@
+//- .mega-nav
+.wrapper(ng-controller='AuthController')
+	nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+		.container
+			.navbar-header
+				button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#main-nav")
+					span.sr-only Menu
+					i.fa.fa-bars
+				a.navbar-brand.navbar-logo(href="index.html")
+					img(src="/images/logo-big.png", alt="ListingConnect")
+			#main-nav.navbar-collapse.collapse.navbar-mega-menu
+				ul.nav.navbar-nav.navbar-right
+					//- li.dropdown
+					//-   a.dropdown-toggle(href="#", data-toggle="dropdown")
+					//-     | HOME
+					//-     i.fa.fa-angle-down
+					//-   ul.dropdown-menu(role="menu")
+					//-     li
+					//-       a(href="index.html") Home v1
+					//-     li
+					//-       a(href="index-v1_dark-header.html") Home v1 Dark Header
+					li
+						a(href="#features") Sellers
+							//- span.label.label-danger.label-main-nav NEW
+					li
+						a(href="#features") Buyers
+					li.dropdown
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| Agents
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li
+								a(href="#features") Features
+							li
+								a(href="#pricing") Pricing
+					li.dropdown
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| About
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li
+								a(href="#about") What Is ListingConnect?
+							//- li
+							//-   a(href="/faq.html") Frequently Asked Questions
+							li
+								a(href="#contact") Contact Us
+					li
+						a(href="http://blog.listingconnect.com/", target="_blank") Blog
+					li.dropdown(ng-if="!$root.user")
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| Log In/Sign Up
+							i.fa.fa-angle-down
+						ul.dropdown-menu.dropdown-menu-login(role="menu")
+							.account-box.login-box.box-with-help
+								h3.text-center Log In
+								form.form-horizontal.padding-10(role="form", name="frm", ng-submit="login(username, password)")
+									.form-group
+										label.control-label.sr-only(for="inputEmail") Email
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-envelope
+												input#inputEmail.form-control(type="email", ng-model="username", name="email", placeholder="Email", ng-required="true")
+									.form-group
+										label.control-label.sr-only(for="inputPassword") Password
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#inputPassword.form-control(type="password", ng-model="password", name="password", ng-minlength="4", placeholder="Password", ng-required="true")
+									.form-group
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox")
+												span Remember me
+									.form-group
+										.col-xs-6
+											button.btn.btn-primary.btn-block(type="submit", ng-disabled="!username || !password")
+												i.fa.fa-sign-in.mr5
+												| Log In
+										.col-xs-6
+											a.btn.btn-danger.btn-block(href="/signup.html")
+												i.fa.fa-edit.mr5
+												| Sign Up
+										.col-xs-12
+											center(align="center")
+												.alert.alert-success.inline.bold(ng-if="success") {{success}}
+												.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+					li.dropdown(ng-if="$root.user")
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| My Account
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li(ng-if="$root.agent")
+								a(href="/agent/profile.html") Profile Home
+							li(ng-if="$root.consumer")
+								a(href="/consumer/profile.html") Profile Home
+							li
+								a(data-toggle="modal", data-target="#signoutModal") Sign Out
+
+	#signoutModal.modal.fade(ng-controller="AuthController", tabindex="-1", role="dialog", aria-labelledby="signoutLabel", aria-hidden="true")
+		.modal-dialog.modal-sm
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal")
+						span(aria-hidden="true") &#215;
+						span.sr-only Close
+					center(align="center")
+						h4#signoutLabel.modal-title Sign Out
+				.modal-body
+					form(role="form", name="frm", ng-submit="$root.logout()")
+						center(align="center")
+							span Are you sure you want to sign out?
+						br
+						.row
+							center(align="center")
+								button.btn.btn-rw.btn-primary(type="submit") Yes
+								button.btn.btn-rw.btn-danger(type="button", data-dismiss="modal") No
+
+	#loginErrorModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal")
+						span(aria-hidden="true") &#215;
+						span.sr-only Close
+					center(align="center")
+						h4#largeModalLabel.modal-title Oops!
+				.modal-body
+					center(align="center")
+						.row
+							.form-group.text-center
+								label.col-sm-12.text-center Unable to login with the information provided. Please go back and review the fields, or if you do not already have an account, go to the sign up page.
+						.row
+							center(align="center")
+								button.btn.btn-primary.mr10(data-dismiss="modal") Try Again
+								a.btn.btn-danger(href="/signup.html") Go To Sign Up
+
+	#loginLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#largeModalLabel.modal-title Logging In
+				.modal-body
+					center(align="center")
+						.row
+							.form-group.text-center
+								label.col-sm-12.text-center Retrieving account information
+									i.fa.fa-spinner.fa-pulse.ml5

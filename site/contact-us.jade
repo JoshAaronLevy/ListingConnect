@@ -1,0 +1,91 @@
+extends ../themes/default.jade
+
+block scripts
+	script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	.page-content
+		.page-header
+			.container
+				h1.page-title.pull-left Contact Us
+		.page-content.margin-offset
+			.container.mt20
+				.row
+					.col-md-9
+						p
+							| Competently extend highly efficient initiatives whereas collaborative alignments. Collaboratively seize impactful opportunities and focused bandwidth. Continually expedite adaptive manufactured products and customer directed intellectual capital. Completely restore intermandated mindshare after multimedia based ideas. Credibly initiate distinctive metrics.
+						br
+						.contact-form-wrapper
+							form#contact-form.form-horizontal.margin-bottom-30px(method="post", role="form", novalidate="")
+								.row
+									.col-sm-6
+										.form-group
+											label.control-label.sr-only(for="contact-name") Name
+											input#contact-name.form-control(type="text", name="name", placeholder="Name*", required="")
+									.col-sm-6
+										.form-group
+											label.control-label.sr-only(for="contact-email") Email
+											input#contact-email.form-control(type="email", name="email", placeholder="Email*", required="")
+								.form-group
+									label.control-label.sr-only(for="contact-subject") Subject
+									.col-sm-12
+										input#contact-subject.form-control(type="text", name="subject", placeholder="Subject")
+								.form-group
+									label.control-label.sr-only(for="contact-message") Message
+									.col-sm-12
+										textarea#contact-message.form-control(name="message", rows="5", cols="30", placeholder="Message*", required="")
+								.form-group
+									.col-sm-12
+										button#submit-button.btn.btn-primary(type="submit")
+											i.fa.loading-icon
+											span Submit Message
+								input#msg-submitted(type="hidden", name="msg-submitted", value="true")
+					.col-md-3
+						//- .widget
+						//- 	h3.widget-title CONTACT INFO
+						//- 	ul.contact-info.fa-ul
+						//- 		li
+						//- 			i.fa.fa-li.fa-building-o
+						//- 			| 76 Ninth Ave, New York, USA
+						//- 		li
+						//- 			i.fa.fa-li.fa-phone
+						//- 			| +621 234 4567
+						//- 		li
+						//- 			i.fa.fa-li.fa-envelope-o
+						//- 			a(href="mailto:hello@yourcompany.com") hello@yourcompany.com
+						.widget
+							h3.widget-title BUSINESS HOURS
+							ul.list-unstyled
+								li
+									strong Monday-Friday:
+									| 8am to 5pm MST
+								li
+									strong Saturday:
+									| Email
+								li
+									strong Sunday:
+									| Email
+						//- .widget
+						//- 	h3.widget-title GETTING THERE
+						//- 	.google-map.sidebar-map
+						//- 		#custom-map-canvas
+					br
+					section.team
+						.section-content
+							.col-md-9
+								.team-member.media
+									img.media-object.img-circle.pull-left(src="/images/Josh-Professional.png", alt="")
+									.media-body
+										h3.media-heading.team-name Josh Levy
+										strong Founder/CEO
+										hr.pull-left
+										.clearfix
+										p
+											| Dynamically evolve client-based portals through world-class models. Phosfluorescently simplify cross-platform convergence and multimedia based portals. Rapidiously.
+										ul.list-inline.social-icon
+											li
+												a(href="#")
+													i.fa.fa-twitter
+											li
+												a(href="#")
+													i.fa.fa-linkedin

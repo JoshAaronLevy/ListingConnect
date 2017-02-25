@@ -1,0 +1,555 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-user.jade
+
+block scripts
+	script(src="/js/apps/agent/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	script.
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-50168733-1', 'auto');
+		ga('send', 'pageview');
+	// Google Tag Manager
+	noscript
+		iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+	script.
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+	// End Google Tag Manager
+	.wrapper
+		center(align="center")
+			script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+			// Agent Profile
+			ins.adsbygoogle(style='display:inline-block;width:728px;height:90px', data-ad-client='ca-pub-4950211747544966', data-ad-slot='1811338737')
+			script.
+				(adsbygoogle = window.adsbygoogle || []).push({});
+	.wrapper(ng-cloak)
+		.container
+			div(ng-controller="ProfileController")
+				center(align="center")
+					h2.name(ng-if="agent.displayName") {{$root.agent.displayName}}
+					h2.name(ng-if="!agent.displayName") Display Name
+					h3.subtitle(ng-if="agent.companyName") {{$root.agent.companyName}}
+					h3.subtitle(ng-if="!agent.companyName") Company Name
+					a.btn.btn-primary.btn-subtitle(data-toggle="modal", data-target="#agentDetailsModal")
+						i.fa.fa-edit.pr5
+						| Edit Profile
+				br
+				.single-product
+					.row
+						.col-md-3
+							#product-images.carousel.slide.product-images(data-ride="carousel", data-interval="false")
+								.carousel-inner
+									.item.active(ng-if="!agent.photo")
+										img.img-responsive.agent-photo(src="/images/photo-unavailable.jpg", alt="Agent Photo")
+									.item.active(ng-if="agent.photo")
+										img.img-responsive.agent-photo(ng-src="{{$root.agent.photo}}", alt="Agent Photo")
+							center(align="center")
+								.pt5
+									a#agent_photo_upload(href="#agent_photo_upload") Upload/Change Photo
+							.clearfix
+						.col-md-6
+							section.product-info.no-margin
+								table.table.table-striped
+									tr
+										th.col-xs-4 Works In:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentCitiesModal")
+										td(ng-if="!$root.agent.cities") N/A
+										td(ng-if="$root.agent.cities") {{$root.agent.cities.join(', ')}}
+									tr
+										th.col-xs-4 Specialties:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentSpecialtiesModal")
+										td(ng-if="!$root.agent.specialties") N/A
+										td(ng-if="$root.agent.specialties") {{$root.agent.specialties.join(', ')}}
+									tr
+										th.col-xs-4 Agent Since:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentDetailsModal")
+										td(ng-if="!$root.agent.agentSince") N/A
+										td(ng-if="$root.agent.agentSince") {{$root.agent.agentSince}}
+									tr
+										th.col-xs-4 Direct Phone:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentDetailsModal")
+										td.blue(ng-if="$root.agent.subscription === 'Free'") Premium Agents Only
+											i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have this visible to leads.")
+										td(ng-if="$root.agent.subscription !== 'Free' && !$root.agent.directPhone") N/A
+										td(ng-if="$root.agent.subscription !== 'Free' && $root.agent.directPhone") {{$root.agent.directPhone}}
+									tr
+										th.col-xs-4 Email:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentDetailsModal")
+										td.blue(ng-if="$root.agent.subscription === 'Free'") Premium Agents Only
+											i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have this visible to leads.")
+										td(ng-if="$root.agent.subscription !== 'Free' && !$root.agent.companyEmail") N/A
+										td(ng-if="$root.agent.subscription !== 'Free' && $root.agent.companyEmail") {{$root.agent.companyEmail}}
+									tr
+										th.col-xs-4 Connect:
+											a.fa.fa-edit.fa-agent-profile(data-toggle="modal", data-target="#agentDetailsModal")
+										td.blue(ng-if="$root.agent.subscription === 'Free'") Premium Agents Only
+											i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have your website and social media links visible to leads.")
+										td(ng-if="$root.agent.subscription !== 'Free'")
+											a.fa.fa-globe.fa-lg(ng-href="{{$root.agent.website}}", target="_blank", title="{{$root.agent.website}}", ng-if="$root.agent.website")
+											i.fa.fa-globe.fa-lg.invalid(title="Website URL Not Yet Added", ng-if="!$root.agent.website")
+											a.fa.fa-linkedin-square.fa-lg(ng-href="{{$root.agent.linkedIn}}", target="_blank", title="{{$root.agent.linkedIn}}", ng-if="$root.agent.linkedIn")
+											i.fa.fa-linkedin-square.fa-lg.invalid(title="LinkedIn Profile Not Yet Added", ng-if="!$root.agent.linkedIn")
+											a.fa.fa-facebook-square.fa-lg(ng-href="{{$root.agent.facebook}}", target="_blank", title="{{$root.agent.facebook}}", ng-if="$root.agent.facebook")
+											i.fa.fa-facebook-square.fa-lg.invalid(title="Facebook Profile Not Yet Added", ng-if="!$root.agent.facebook")
+											a.fa.fa-twitter-square.fa-lg(ng-href="{{$root.agent.twitter}}", target="_blank", title="{{$root.agent.twitter}}", ng-if="$root.agent.twitter")
+											i.fa.fa-twitter-square.fa-lg.invalid(title="Twitter Profile Not Yet Added", ng-if="!$root.agent.twitter")
+								//- form#product-single-form.form-inline(action="#", role="form")
+								//- 	.row
+								//- 		center(align="center")
+								//- 			a.btn.btn-primary.btn-subtitle(data-toggle="modal", data-target="#agentDetailsModal")
+								//- 				i.fa.fa-edit.pr5
+								//- 				| Edit Details
+						.col-md-3
+							#product-images.carousel.slide.product-images(data-ride="carousel", data-interval="false")
+								.carousel-inner
+									.item.active(ng-if="!agent.logo")
+										img.img-responsive.agent-logo(src="/images/logo-unavailable.jpg", alt="Agent Logo")
+									.item.active(ng-if="agent.logo")
+										img.img-responsive.agent-logo(ng-src="{{$root.agent.logo}}", alt="Agent Logo")
+							center(align="center")
+								.pt5
+									a#agent_logo_upload(href="#agent_logo_upload") Upload/Change Logo
+					.bottom
+						.custom-tabs-line.tabs-line-bottom
+							ul.nav.nav-pills.tabs-iconized(role="tablist")
+								li.active
+									a(href="#summary", role="tab", data-toggle="tab") Professional Summary
+								li
+									a(href="#specialties", role="tab", data-toggle="tab") Specialties
+								li
+									a(href="#contactDetails", role="tab", data-toggle="tab") Contact Details
+								//- li
+								//-   a(href="#reviews", role="tab", data-toggle="tab") Agent Reviews
+						section.tab-content
+							#summary.tab-pane.fade.in.active
+								.col-sm-8.col-sm-offset-2
+									.section-title
+										h4 Professional Summary
+										a.fa.fa-edit.fa-profile(data-toggle="modal", data-target="#agentProfileModal", ng-if="agent")
+										hr
+									p.mt20.pb50(ng-bind-html="trustAsHtml($root.agent.profile)", ng-if="$root.agent.profile")
+									.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.agent.profile") Please click the, 'Edit Summary' button above to add a custom description about you (i.e. "Worked in the Denver Metro area for the last 10 years...").
+							#specialties.tab-pane.fade.in
+								.col-sm-8.col-sm-offset-2
+									.section-title
+										h4 Agent Specialties
+										a.fa.fa-edit.fa-profile(data-toggle="modal", data-target="#agentSpecialtiesModal", ng-if="agent")
+										hr
+									.col-sm-8.col-sm-offset-2
+										section
+											ul.list-unstyled.project-detail-list.mt20
+												li
+													strong Works In:
+													p {{$root.agent.cities.join(', ')}}
+												li
+													strong Specialties:
+													p {{$root.agent.specialties.join(', ')}}
+												li
+													strong Languages:
+													p {{$root.agent.languages.join(', ')}}
+							#contactDetails.tab-pane.fade.in
+								.col-sm-8.col-sm-offset-2
+									.section-title
+										h4 Contact Details
+										a.fa.fa-edit.fa-profile(data-toggle="modal", data-target="#agentDetailsModal", ng-if="agent")
+										hr
+									.col-sm-8.col-sm-offset-2
+										ul.profile-table
+											li
+												.field Company:
+												.value(ng-if="!$root.agent.company") N/A
+												.value(ng-if="$root.agent.company") {{$root.agent.companyName}}
+											li
+												.field Address:
+												.value(ng-if="!$root.agent.address1") N/A
+												.value(ng-if="$root.agent.address1 && !$root.agent.address2") {{$root.agent.address1}}
+												.value(ng-if="$root.agent.address1 && $root.agent.address2") {{$root.agent.address1}}, {{$root.agent.address2}}
+											li
+												.field City, State Zip:
+												.value(ng-if="!$root.agent.city && !$root.agent.state && !$root.agent.zip") N/A
+												.value(ng-if="!$root.agent.city && $root.agent.state && $root.agent.zip") N/A, {{$root.agent.state}} {{$root.agent.zip}}
+												.value(ng-if="!$root.agent.city && $root.agent.state && !$root.agent.zip") N/A, {{$root.agent.state}} N/A
+												.value(ng-if="$root.agent.city && $root.agent.state && !$root.agent.zip") {{$root.agent.city}}, {{$root.agent.state}} N/A
+												.value(ng-if="$root.agent.city && $root.agent.state && $root.agent.zip") {{$root.agent.city}}, {{$root.agent.state}} {{$root.agent.zip}}
+											li(ng-if="$root.agent.subscription === 'Free'")
+												.field Email:
+												.value Premium Agents Only
+													i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have this visible to leads.")
+											li(ng-if="$root.agent.subscription !== 'Free'")
+												.field Email:
+												.value(ng-if="!$root.agent.companyEmail") N/A
+												.value(ng-if="$root.agent.companyEmail") {{$root.agent.companyEmail}}
+											li(ng-if="$root.agent.subscription === 'Free'")
+												.field Office Phone:
+												.value Premium Agents Only
+													i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have this visible to leads.")
+											li(ng-if="$root.agent.subscription !== 'Free'")
+												.field Office Phone:
+												.value(ng-if="!$root.agent.officePhone") N/A
+												.value(ng-if="$root.agent.officePhone") {{$root.agent.officePhone}}
+											li(ng-if="$root.agent.subscription === 'Free'")
+												.field Direct Phone:
+												.value Premium Agents Only
+													i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have this visible to leads.")
+											li(ng-if="$root.agent.subscription !== 'Free'")
+												.field Direct Phone:
+												.value(ng-if="!$root.agent.directPhone") N/A
+												.value(ng-if="$root.agent.directPhone") {{$root.agent.directPhone}}
+											li(ng-if="$root.agent.subscription === 'Free'")
+												.field Connect:
+												.value Premium Agents Only
+													i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Become a Premium Agent for just $29 per month to have your website and social media links visible to leads.")
+											li(ng-if="$root.agent.subscription !== 'Free'")
+												.field Connect:
+												.value
+													a.fa.fa-globe.fa-lg(ng-href="{{$root.agent.website}}", target="_blank", title="{{$root.agent.website}}", ng-if="$root.agent.website")
+													i.fa.fa-globe.fa-lg.invalid(title="Website URL Not Yet Added", ng-if="!$root.agent.website")
+													a.fa.fa-linkedin-square.fa-lg(ng-href="{{$root.agent.linkedIn}}", target="_blank", title="{{$root.agent.linkedIn}}", ng-if="$root.agent.linkedIn")
+													i.fa.fa-linkedin-square.fa-lg.invalid(title="LinkedIn Profile Not Yet Added", ng-if="!$root.agent.linkedIn")
+													a.fa.fa-facebook-square.fa-lg(ng-href="{{$root.agent.facebook}}", target="_blank", title="{{$root.agent.facebook}}", ng-if="$root.agent.facebook")
+													i.fa.fa-facebook-square.fa-lg.invalid(title="Facebook Profile Not Yet Added", ng-if="!$root.agent.facebook")
+													a.fa.fa-twitter-square.fa-lg(ng-href="{{$root.agent.twitter}}", target="_blank", title="{{$root.agent.twitter}}", ng-if="$root.agent.twitter")
+													i.fa.fa-twitter-square.fa-lg.invalid(title="Twitter Profile Not Yet Added", ng-if="!$root.agent.twitter")
+							//- #reviews.tab-pane.fade.in
+							//-   .section-title
+							//-     h4 Agent Reviews
+							//-   p
+							//-     | Distinctively transition innovative resources after compelling human capital. Synergistically provide access to turnkey e-services whereas scalable leadership. Assertively engage next-generation metrics via high-payoff total linkage. Conveniently reintermediate extensible ideas vis-a-vis efficient action items.
+
+				#profileSuccessModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								//- button.close(type="button", data-dismiss="modal")
+								//- 	span(aria-hidden="true") &#215;
+								//- 	span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title Success!
+							.modal-body
+								form(role="profileSuccessForm", ng-submit="profileSuccess()")
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Profile successfully saved!
+										.row
+											center(align="center")
+												button.btn.btn-primary(type="submit")
+													i.fa.fa-thumbs-up.mr5
+													| Ok
+
+				#agentProfileModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title Edit Professional Summary
+							.modal-body
+								form(role="remarksform", ng-submit="editAgent()")
+									.row
+										.form-group.col-xs-12
+											label Remarks
+											i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="A summary about you and your professional qualifications.")
+											textarea(ckeditor="editorOptions", ng-model="$root.agent.profile")
+									center(align="center")
+										.row
+											br
+											button.btn.btn-rw.btn-primary(type="submit") Save Profile
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#cancelAgentRemarks") Discard
+
+				#cancelAgentRemarks.modal.fade(tabindex="-1", role="dialog", aria-labelledby="cancelModal", aria-hidden="true")
+					.modal-dialog.modal-md
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#cancelModal.modal-title Cancel Profile Update
+							.modal-body
+								form(role="form", name="remarksCancel" ng-submit="cancelAgentRemarks()")
+									center(align="center")
+										| Are you sure you want to cancel creating/updating your profile? NOTE: This cannot be undone.
+									br
+									.row
+										center(align="center")
+											button.btn.btn-rw.btn-success(data-dismiss="modal") Keep
+											button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#agentProfileModal", data-dismiss="modal") Discard
+
+				#agentDetailsModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title Agent Profile Details
+							.modal-body
+								form(role="form", name="detailsForm", ng-submit="editAgent()")
+									.row
+										.form-group.col-md-6
+											label Display Name
+											input#displayName.form-control(name="displayName", type="text", placeholder="i.e. Annie Agent", ng-model="$root.agent.displayName", ng-required="false")
+									.row
+										.form-group.col-md-6
+											label Company Name
+											input#companyName.form-control(name="companyName", type="text", ng-model="$root.agent.companyName", ng-required="false")
+										.form-group.col-md-6
+											label Company Email
+											input#companyEmail.form-control(name="companyEmail", type="text", ng-model="$root.agent.companyEmail", ng-required="false")
+									.row
+										.form-group.col-md-6
+											label Address
+											input#address1.form-control(name="address1", type="text", ng-model="$root.agent.address1", ng-required="false")
+										.form-group.col-md-6
+											label Unit or Suite #
+											input#address2.form-control(name="address2", type="text", ng-model="$root.agent.address2", ng-required="false")
+									.row
+										.form-group.col-md-5
+											label City
+											input#city.form-control(name="city", type="text", ng-model="$root.agent.city", ng-required="false")
+										.form-group.col-md-4
+											label State
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Please contact us if you need to change this.")
+											strong.form-block {{$root.agent.state}}
+										.form-group.col-md-3
+											label Zip
+											input#zip.form-control(name="zip", type="number", ng-model="$root.agent.zip", ng-required="false")
+									.row
+										.form-group.col-md-6
+											label Specialty Cities
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Enter the cities you work in or specialize in to help match you with leads.")
+											ui-select(multiple="", ng-model="$root.agent.cities", theme="select2", close-on-select="true", style="min-width: 300px;")
+												ui-select-match {{$item}}
+												ui-select-choices(repeat="city in $root.cities | filter: $select.search")
+													| {{city}}
+										.form-group.col-md-4
+											label Agent Since
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="When did you become a Real Estate Agent?")
+											select#agentSince.form-control(name="agentSince", placeholder="Select", ng-model="$root.agent.agentSince", ng-required="false")
+												option(value='') Select
+												option(value='2016') 2016
+												option(value='2015') 2015
+												option(value='2014') 2014
+												option(value='2013') 2013
+												option(value='2012') 2012
+												option(value='2011') 2011
+												option(value='2010') 2010
+												option(value='2009') 2009
+												option(value='2008') 2008
+												option(value='2007') 2007
+												option(value='2006') 2006
+												option(value='2005') 2005
+												option(value='2004') 2004
+												option(value='2003') 2003
+												option(value='2002') 2002
+												option(value='2001') 2001
+												option(value='2000') 2000
+												option(value='1999') 1999
+												option(value='1998') 1998
+												option(value='1997') 1997
+												option(value='1996') 1996
+												option(value='1995') 1995
+												option(value='1994') 1994
+												option(value='1993') 1993
+												option(value='1992') 1992
+												option(value='1991') 1991
+												option(value='1990') 1990
+												option(value='1989') 1989
+												option(value='1988') 1988
+												option(value='1987') 1987
+												option(value='1986') 1986
+												option(value='1985') 1985
+												option(value='1984') 1984
+												option(value='1983') 1983
+												option(value='1982') 1982
+												option(value='1981') 1981
+												option(value='1980') 1980
+									.row
+										.form-group.col-md-6
+											label Office Phone
+											input#officePhone.form-control(name="officePhone", type="text", ng-model="$root.agent.officePhone", ng-required="false")
+										.form-group.col-md-6
+											label Direct Phone
+											input#directPhone.form-control(name="directPhone", type="text", ng-model="$root.agent.directPhone", ng-required="false")
+									.row
+										.form-group.col-md-6
+											label Website URL
+											input#website.form-control(name="website", type="text", ng-model="$root.agent.website", ng-required="false")
+										.form-group.col-md-6
+											label LinkedIn URL
+											input#linkedIn.form-control(name="linkedIn", type="text", ng-model="$root.agent.linkedIn", ng-required="false")
+									.row
+										.form-group.col-md-6
+											label Facebook URL
+											input#facebook.form-control(name="facebook", type="text", ng-model="$root.agent.facebook", ng-required="false")
+										.form-group.col-md-6
+											label Twitter URL
+											input#twitter.form-control(name="twitter", type="text", ng-model="$root.agent.twitter", ng-required="false")
+									.row
+										center(align="center")
+											br
+											button.btn.btn-rw.btn-primary(type="submit") Save Details
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#cancelAgentDetails") Discard
+
+				#cancelAgentDetails.modal.fade(tabindex="-1", role="dialog", aria-labelledby="cancelModal", aria-hidden="true")
+					.modal-dialog.modal-md
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#cancelModal.modal-title Cancel Profile Update
+							.modal-body
+								form(role="form", name="remarksCancel" ng-submit="cancelAgentDetails()")
+									center(align="center")
+										| Are you sure you want to cancel creating/updating your profile? NOTE: This cannot be undone.
+									br
+									.row
+										center(align="center")
+											button.btn.btn-rw.btn-success(data-dismiss="modal") Keep
+											button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#agentDetailsModal", data-dismiss="modal") Discard
+
+				#agentCitiesModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title My Profile
+							.modal-body
+								form(role="form", name="citiesForm", ng-submit="editAgent()")
+									center(align="center")
+										strong Which Cities Do You Work In?
+									.row
+										.form-group.col-md-5
+											label Specialty Cities
+												i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Enter the cities you work in or specialize in to help match you with leads.")
+											ui-select(multiple="", ng-model="$root.agent.cities", theme="select2", close-on-select="true", style="min-width: 300px;")
+												ui-select-match {{$item}}
+												ui-select-choices(repeat="city in $root.cities | filter: $select.search")
+													| {{city}}
+									.row
+										center(align="center")
+											br
+											button.btn.btn-rw.btn-primary(type="submit") Save Profile
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#cancelCities") Discard
+
+				#cancelCities.modal.fade(tabindex="-1", role="dialog", aria-labelledby="cancelModal", aria-hidden="true")
+					.modal-dialog.modal-md
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#cancelModal.modal-title Cancel Profile Update
+							.modal-body
+								form(role="form", name="citiesCancel" ng-submit="cancelCities()")
+									center(align="center")
+										| Are you sure you want to cancel creating/updating your profile? NOTE: This cannot be undone.
+									br
+									.row
+										center(align="center")
+											button.btn.btn-rw.btn-success(data-dismiss="modal") Keep
+											button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#agentCitiesModal", data-dismiss="modal") Discard
+
+				#agentSpecialtiesModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#largeModalLabel.modal-title My Profile
+							.modal-body
+								form(role="form", name="profileForm", ng-submit="editAgent()")
+									.row
+										.form-group.col-md-12
+											label Enter the cities you work in
+												i.fa.fa-question-circle.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Enter the cities you work in or specialize in to help match you with leads.")
+											ui-select(multiple="", ng-model="$root.agent.cities", theme="select2", close-on-select="true", style="min-width: 300px;")
+												ui-select-match {{$item}}
+												ui-select-choices(repeat="city in $root.cities | filter: $select.search")
+													| {{city}}
+									.row
+										.form-group.col-md-12
+											label.col-md-6.control-label Select the following specialties (Ctrl + Click for multiple)
+										.col-md-6
+											select.form-control(multiple="", ng-model="$root.agent.specialties")
+												option(value="FBA") First-Time-Buyer
+												option(value="Relocation") Relocation
+												option(value="Downsizing") Downsizing
+												option(value="Upsizing") Upsizing
+												option(value="Pre-Foreclosure") Pre-Foreclosure
+												option(value="Foreclosure") Foreclosure
+												option(value="Distressed") Distressed Homes
+									.row
+										.form-group.col-md-12
+											label.col-md-6.control-label Select the following languages you speak (Ctrl + Click for multiple)
+										.col-md-6
+											select.form-control(multiple="", ng-model="$root.agent.languages")
+												option(value="English") English
+												option(value="Spanish") Spanish
+												option(value="French") French
+												option(value="Italian") Italian
+												option(value="Russian") Russian
+												option(value="German") German
+												option(value="Arabic") Arabic
+									.row
+										center(align="center")
+											br
+											button.btn.btn-rw.btn-primary(type="submit") Save Profile
+							.modal-footer
+								button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#cancelSpecialties") Discard
+
+				#cancelSpecialties.modal.fade(tabindex="-1", role="dialog", aria-labelledby="cancelModal", aria-hidden="true")
+					.modal-dialog.modal-md
+						.modal-content
+							.modal-header
+								button.close(type="button", data-dismiss="modal")
+									span(aria-hidden="true") &#215;
+									span.sr-only Close
+								center(align="center")
+									h4#cancelModal.modal-title Cancel Profile Update
+							.modal-body
+								form(role="form", name="profileCancel" ng-submit="cancelSpecialties()")
+									center(align="center")
+										| Are you sure you want to cancel creating/updating your profile? NOTE: This cannot be undone.
+									br
+									.row
+										center(align="center")
+											button.btn.btn-rw.btn-success(data-dismiss="modal") Keep
+											button.btn.btn-rw.btn-danger(data-toggle="modal", data-target="#agentSpecialtiesModal", data-dismiss="modal") Discard
+
+				#profileLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+					.modal-dialog.modal-lg
+						.modal-content
+							.modal-header
+								center(align="center")
+									h4#largeModalLabel.modal-title Loading
+							.modal-body
+								center(align="center")
+									.row
+										.form-group.text-center
+											label.col-sm-12.text-center Loading Agent details
+												i.fa.fa-spinner.fa-pulse.ml5

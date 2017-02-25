@@ -1,0 +1,27 @@
+//- link(rel='stylesheet', href='../../css/jquery.fileupload.css')
+//- link(rel='stylesheet', href='../../css/jquery.fileupload-ui.css')
+//- script(src='../../js/vendor/jquery.ui.widget.js')
+form.fileupload(method='POST', enctype='multipart/form-data')
+  // Redirect browsers with JavaScript disabled to the origin page
+  noscript
+    h1 Failed to Run Required JavaScript
+  // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
+  .row.fileupload-buttonbar
+    .col-xs-12.field-group
+      input#mlsID(type='text', placeholder='MLS #/ListingID', name='name', ng-model='listingID', value='')
+      | -
+      input#mlsIndex(type='number', placeholder='number', name='number', ng-model='listingIndex', value='1')
+    .col-xs-6.text-center
+      button.btn.btn-success(ng-click='updateFileName(listingID, listingIndex)') Set Upload form to: {{listingID}}-{{listingIndex}}
+    .col-xs-6.text-center
+      // The fileinput-button span is used to style the file input field as button
+      span.btn.btn-success.fileinput-button
+        i.glyphicon.glyphicon-plus
+        span
+          | Save File To:
+          br
+          code
+            | https://virtualmls.com/rebeacons/{{property.listingID}}-{{property.listingIndex}}.jpg
+        input.fileupload(type='file', name='files')
+  ul.files
+

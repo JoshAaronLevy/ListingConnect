@@ -1,0 +1,33 @@
+{
+  "name": "realestatebeacons",
+  "version": "0.0.1",
+  "ignore": [
+    ".gitignore",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "ag-grid": "~2.3.0",
+    "animate-css": "*",
+    "bootstrap": "~3.3.6",
+    "ckeditor": "~4.5.3",
+    "font-awesome": "4.2.0",
+    "html5shiv": "3.7.2",
+    "jquery": "2.1.4",
+    "lodash": "~3.9.3",
+    "ng-ckeditor": "~0.2.1",
+    "respond": "1.4.2",
+    "Trip.js": "trip.js#~3.1.0",
+    "intro.js": "~1.1.1",
+    "Ionicons": "ionicons#~2.0.1",
+    "moment": "~2.10.6",
+    "velocity": "~1.2.3",
+    "angular-ui-select3": "ui-select#*",
+    "ui-select": "angular-ui-select#~0.14.2",
+    "angular-sanitize": "~1.4.9"
+  },
+  "resolutions": {
+    "jquery": "2.1.4",
+    "bootstrap": "~3.3.6"
+  }
+}

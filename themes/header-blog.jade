@@ -1,0 +1,411 @@
+//- .mega-nav
+.wrapper(ng-controller='AuthController')
+	nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+		.container
+			.navbar-header
+				button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#main-nav")
+					span.sr-only Toggle Navigation
+					i.fa.fa-bars
+				a.navbar-brand.navbar-logo(href="/index.html")
+					img(src="/images/logo-big.png", alt="ListingConnect")
+			#main-nav.navbar-collapse.collapse.navbar-mega-menu
+				ul.nav.navbar-nav.navbar-right
+					//- li.dropdown
+					//-   a.dropdown-toggle(href="#", data-toggle="dropdown")
+					//-     | HOME
+					//-     i.fa.fa-angle-down
+					//-   ul.dropdown-menu(role="menu")
+					//-     li
+					//-       a(href="index.html") Home v1
+					//-     li
+					//-       a(href="index-v1_dark-header.html") Home v1 Dark Header
+					li
+						a(href="/blog/index.html") Blog Home
+					li
+						a(data-toggle="modal", data-target="#featuresModal") Sellers
+							//- span.label.label-danger.label-main-nav NEW
+					li
+						a(data-toggle="modal", data-target="#featuresModal") Buyers
+					li.dropdown
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| Agents
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li
+								a(data-toggle="modal", data-target="#featuresModal") Features
+							li
+								a(data-toggle="modal", data-target="#pricingModal") Pricing
+					li.dropdown
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| About
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li
+								a(data-toggle="modal", data-target="#aboutModal") What Is ListingConnect?
+							//- li
+							//-   a(href="/faq.html") Frequently Asked Questions
+							li
+								a(data-toggle="modal", data-target="#supportModal") Contact Us
+					li.dropdown(ng-if="!$root.user")
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| Log In/Sign Up
+							i.fa.fa-angle-down
+						ul.dropdown-menu.dropdown-menu-login(role="menu")
+							.account-box.login-box.box-with-help
+								h3.text-center Log In
+								form.form-horizontal.padding-10(role="form", name="frm", ng-submit="login(username, password)")
+									.form-group
+										label.control-label.sr-only(for="inputEmail") Email
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-envelope
+												input#inputEmail.form-control(type="email", ng-model="username", name="email", placeholder="Email", ng-required="true")
+									.form-group
+										label.control-label.sr-only(for="inputPassword") Password
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#inputPassword.form-control(type="password", ng-model="password", name="password", ng-minlength="4", placeholder="Password", ng-required="true")
+									.form-group
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox")
+												span Remember me
+									.form-group
+										.col-xs-6
+											button.btn.btn-primary.btn-block(type="submit", ng-disabled="!username || !password")
+												i.fa.fa-sign-in.mr5
+												| Log In
+										.col-xs-6
+											a.btn.btn-danger.btn-block(href="/signup.html")
+												i.fa.fa-edit.mr5
+												| Sign Up
+										.col-xs-12
+											center(align="center")
+												.alert.alert-success.inline.bold(ng-if="success") {{success}}
+												.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+					li.dropdown(ng-if="$root.user")
+						a.dropdown-toggle(href="#", data-toggle="dropdown")
+							| My Account
+							i.fa.fa-angle-down
+						ul.dropdown-menu(role="menu")
+							li(ng-if="$root.agent")
+								a(href="/agent/profile.html") Profile Home
+							li(ng-if="$root.consumer")
+								a(href="/consumer/profile.html") Profile Home
+							li
+								a(data-toggle="modal", data-target="#signoutModal") Sign Out
+
+	#signoutModal.modal.fade(ng-controller="AuthController", tabindex="-1", role="dialog", aria-labelledby="signoutLabel", aria-hidden="true")
+		.modal-dialog.modal-sm
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal")
+						span(aria-hidden="true") &#215;
+						span.sr-only Close
+					center(align="center")
+						h4#signoutLabel.modal-title Sign Out
+				.modal-body
+					form(role="form", name="frm", ng-submit="$root.logout()")
+						center(align="center")
+							span Are you sure you want to sign out?
+						br
+						.row
+							center(align="center")
+								button.btn.btn-rw.btn-primary(type="submit") Yes
+								button.btn.btn-rw.btn-danger(type="button", data-dismiss="modal") No
+
+	#loginErrorModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal")
+						span(aria-hidden="true") &#215;
+						span.sr-only Close
+					center(align="center")
+						h4#largeModalLabel.modal-title Oops!
+				.modal-body
+					center(align="center")
+						.row
+							.form-group.text-center
+								label.col-sm-12.text-center Unable to login with the information provided. Please go back and review the fields, or if you do not already have an account, go to the sign up page.
+						.row
+							center(align="center")
+								button.btn.btn-primary.mr10(data-dismiss="modal") Try Again
+								a.btn.btn-danger(href="/signup.html") Go To Sign Up
+
+	#loginLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#largeModalLabel.modal-title Logging In
+				.modal-body
+					center(align="center")
+						.row
+							.form-group.text-center
+								label.col-sm-12.text-center Retrieving account information
+									i.fa.fa-spinner.fa-pulse.ml5
+
+	#aboutModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#largeModalLabel.modal-title ABOUT
+				.modal-body
+					.heading-blog-modal
+						p.lead What Is ListingConnect?
+						hr
+					center(align="center")
+						iframe(width="560", height="315", src="https://www.youtube.com/embed/_DwyqEKGmvc", frameborder="0", allowfullscreen="")
+				.modal-footer
+					button.btn.btn-rw.btn-danger(data-dismiss="modal") Close
+
+	#supportModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="supportLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#supportLabel.modal-title Customer Support
+				.modal-body
+					iframe#contactform123(allowtransparency='true', style='min-height:600px; height:inherit; overflow:auto;', width='100%', name='contactform123', marginwidth='0', marginheight='0', frameborder='0', src='https://www.123contactform.com/my-contact-form-1296453.html')
+				.modal-footer
+					button.btn.btn-danger(data-dismiss="modal") Close
+
+	#pricingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="supportLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#supportLabel.modal-title PRICING
+				.modal-body
+					.heading-blog-modal
+						p.lead.lead-alt ListingConnect is completely free for home buyers and home sellers.
+						p.lead Below are pricing details for Real Estate Agents.
+						p.lead.lead-special SPECIAL: ListingConnect Premium is free for all Agents through June 30th. No credit card required.
+						hr
+					.multiple-pricing-table
+						.plan-heading
+							h4 Individual Agents
+						.row
+							table#comparetable.blueshine
+								tr
+									td.blank
+									th.basic Basic
+									th.engagement Engagement
+									th.premium Premium
+								tr
+									td.rowTitle Price
+									td.table-plain Free
+									td.table-plain $9 per Engagement
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="$9 one-time fee per lead engaged in the internal messaging system.")
+									td.table-large $29 per Month
+										p.table-large FREE through 6/30
+								tr
+									td.rowTitle Maximum Visible Leads
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Maximum number of leads that appear in your lead list.")
+									td.table-plain 5
+									td.table-plain Unlimited
+									td.table-large Unlimited
+								tr
+									td.rowTitle Basic Agent Profile
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads will NOT be able to view your email address, phone numbers, website link or social media links.")
+									td.table-plain Yes
+									td.table-plain Yes
+									td.table-large Yes
+								tr
+									td.rowTitle Detailed Agent Profile
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads will be able to view your email address, phone numbers, website link and social media links.")
+									td.table-plain No
+									td.table-plain No
+									td.table-large Yes
+								tr
+									td.rowTitle Save Leads as Favorites
+									td.table-plain No
+									td.table-plain No
+									td.table-large Yes
+								tr
+									td.rowTitle Private Messaging
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Ability to cultivate leads via the private, internal messaging system.")
+									td.table-plain No
+									td.table-plain $9 per Lead
+									td.table-large Unlimited
+								tr
+									td.rowTitle Phone Support
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Phone support available Monday-Friday, 8:00am to 5:00pm Mountain Standard Time.")
+									td.table-plain No
+									td.table-plain Yes
+									td.table-large Yes
+								tr
+									td.rowTitle Email Support
+										i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Email support available 8:00am to 5:00pm Mountain Standard Time.")
+									td.table-plain Monday-Friday
+									td.table-plain Sunday-Saturday
+									td.table-large Sunday-Saturday
+					.single-pricing-table
+						h4.plan-heading Office Site License Pricing
+						.plan-content
+							.row
+								.col-md-12
+									ul.list-unstyled.plan-detail-list
+										li
+											strong Looking to get signed up with a group of 50 or more Agents? Contact ListingConnect today to discuss company site license pricing options.
+								//- .col-md-6
+								//- 	a.btn.btn-primary.btn-lg.btn-block(data-toggle="modal", data-target="#supportModal")
+								//- 		| Contact Us
+				.modal-footer
+					button.btn.btn-danger(data-dismiss="modal") Close
+
+	#featuresModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header
+					center(align="center")
+						h4#largeModalLabel.modal-title FEATURES
+				.modal-body
+					.heading-blog-modal
+						p.lead How Can ListingConnect Help You?
+						hr
+					center(align="center")
+						.custom-tabs-line.tabs-line-bottom
+							ul.nav.nav-pills.tabs-iconized(role="tablist")
+								li.active
+									a.home-tabs(href="#sellerFeatures", role="tab", data-toggle="tab")
+										| Home Seller
+								li
+									a.home-tabs(href="#buyerFeatures", role="tab", data-toggle="tab")
+										| Home Buyer
+								li
+									a.home-tabs(href="#agentFeatures", role="tab", data-toggle="tab")
+										| Real Estate Agent
+						.tab-content
+							#sellerFeatures.tab-pane.fade.in.active
+								.row
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-home.pt5
+											h2.boxed-content-title-modal CUSTOMIZED PROFILE
+											p.features
+												| You create a custom profile of your home. Then, top Real Estate Agents compete for your business.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-lock.pt5
+											h2.boxed-content-title-modal QUALITY ASSURANCE
+											p.features
+												| Every Agent is an active, licensed Real Estate Agent and undergoes a thorough vetting process.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-search.pt5
+											h2.boxed-content-title-modal SEARCH ANONYMOUSLY
+											p.features
+												| ListingConnect allows agents to discover and connect with you while keeping your contact information private.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-comments-o.pt5
+											h2.boxed-content-title-modal PRIVATE MESSAGING
+											p.features
+												| Chat with Real Estate Agents anonymously with internal messaging, keeping your contact information private.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-user.pt5
+											h2.boxed-content-title-modal AGENT PROFILES
+											p.features
+												| The detailed agent profiles allow you to learn everything you need to know about an agent in one place.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-usd.pt5
+											h2.boxed-content-title-modal COMPLETELY FREE
+											p.features
+												| Home sellers and buyers have full access to ListingConnect for free.
+								center(align="center")
+									a.btn.btn-primary.btn-lg.mr10(href="/signup.html")
+										| Sign Up
+							#buyerFeatures.tab-pane.fade.in
+								.row
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-home.pt5
+											h2.boxed-content-title-modal CUSTOMIZED PROFILE
+											p.features
+												| You create a custom home buyer profile. Then, top Real Estate Agents compete for your business.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-lock.pt5
+											h2.boxed-content-title-modal QUALITY ASSURANCE
+											p.features
+												| Every Agent is an active, licensed Real Estate Agent and undergoes a thorough vetting process.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-search.pt5
+											h2.boxed-content-title-modal SEARCH ANONYMOUSLY
+											p.features
+												| ListingConnect allows agents to discover and connect with you while keeping your contact information private.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-comments-o.pt5
+											h2.boxed-content-title-modal PRIVATE MESSAGING
+											p.features
+												| Chat with Real Estate Agents anonymously with internal messaging, keeping your contact information private.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-user.pt5
+											h2.boxed-content-title-modal AGENT PROFILES
+											p.features
+												| The detailed agent profiles allow you to learn everything you need to know about an agent in one place.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-usd.pt5
+											h2.boxed-content-title-modal COMPLETELY FREE
+											p.features
+												| Home sellers and buyers have full access to ListingConnect for free.
+								center(align="center")
+									a.btn.btn-primary.btn-lg.mr10(href="/signup.html")
+										| Sign Up
+							#agentFeatures.tab-pane.fade.in
+								.row
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-list-alt.pt5
+											h2.boxed-content-title-modal AGENT PROFILE
+											p.features
+												| Profiles include qualifications, specialties, links to your website and social media and more.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-lock.pt5
+											h2.boxed-content-title-modal QUALITY ASSURANCE
+											p.features
+												| Only licensed Real Estate Agents are allowed to use ListingConnect.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-home.pt5
+											h2.boxed-content-title-modal EVALUATE LEADS
+											p.features
+												| View details of a lead's existing home or home they are looking to buy before reaching out for the first contact.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-users.pt5
+											h2.boxed-content-title-modal PROACTIVE LEAD GEN
+											p.features
+												| The most proactive lead generation tool on the market, allowing you to make first contact with qualified leads.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-comments-o.pt5
+											h2.boxed-content-title-modal PRIVATE MESSAGING
+											p.features
+												| The internal messaging system enables you to quickly build rapport with leads and cultivate them into clients.
+									.col-md-4
+										.boxed-content.left-aligned
+											i.fa.fa-usd.pt5
+											h2.boxed-content-title-modal UNBEATABLE PRICING
+											p.features
+												| Sign up free. Packages with access to all features are available for industry-leading prices.
+								center(align="center")
+									a.btn.btn-primary.btn-lg.mr10(href="/signup.html")
+										| Sign Up
+									a.btn.btn-success.btn-lg(href="/pricing.html")
+										| Pricing
+				.modal-footer
+					button.btn.btn-rw.btn-danger(data-dismiss="modal") Close

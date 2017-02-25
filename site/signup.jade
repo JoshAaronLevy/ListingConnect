@@ -1,0 +1,462 @@
+extends ../themes/default.jade
+
+block head
+	meta(name='ListingConnect Signup', content='Create Your Free ListingConnect Profile')
+
+block scripts
+	script(src="/js/apps/home/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	.page-content
+		.shop-main.register(ng-controller='AuthController')
+			.container
+				center(align="center")
+					.custom-tabs-line.tabs-line-bottom
+						ul.nav.nav-pills.tabs-iconized(role="tablist")
+							li.active
+								a(href="#sellerSignup", role="tab", data-toggle="tab")
+									| Home Seller
+							li
+								a(href="#buyerSignup", role="tab", data-toggle="tab")
+									| Home Buyer
+							li
+								a(href="#agentSignup", role="tab", data-toggle="tab")
+									| Real Estate Agent
+					.tab-content
+						#sellerSignup.tab-pane.fade.in.active
+							.account-box.register-box
+								h4 Home Seller Signup
+								form.form-horizontal(role="form", name="sellerFrm", ng-submit="sellerSignup()")
+									.form-group
+										label.control-label.sr-only(for="profileName") Username
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-user
+												input#profileName.form-control(type="text", name="profileName", ng-model="signupUser.profileName", ng-required="true", placeholder="Username")
+										.col-sm-1
+											i.fa.fa-rw.fa-question-circle.form-info(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Since your personal and home details are private, this is the name Real Estate Agents will see associated with your profile.")
+									.form-group
+										label.control-label.sr-only(for="email") Email (NEVER shared with Real Estate Agents)
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-envelope
+												input#email.form-control(type="email", name="username", ng-model="signupUser.username", ng-required="true", placeholder="Email (NEVER shown to Real Estate Agents)")
+										.col-sm-1
+											i.fa.fa-rw.fa-question-circle.form-info(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="This will be used for future login purposes only. Your email address is never shown to Real Estate Agents.")
+									.form-group
+										label.control-label.sr-only(for="password") Password
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#password.form-control(type="password", name="password", ng-model="signupUser.password", ng-required="true", placeholder="Password (Minimum 4 Characters)")
+									.form-group
+										label.control-label.sr-only(for="password2") Repeat Password
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#password2.form-control(type="password", placeholder="Confirm Password", ng-model="signupUser.passwordConfirm")
+									.form-group
+										label.control-label.sr-only(for="state") State
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-map-marker
+												select#state.form-control(name="state", placeholder="State", ng-model="signupUser.state", ng-required="true")
+													option(value='') State
+													option(value='AL') AL - Alabama
+													option(value='AK') AK - Alaska
+													option(value='AZ') AZ - Arizona
+													option(value='AR') AR - Arkansas
+													option(value='CA') CA - California
+													option(value='CO') CO - Colorado
+													option(value='CT') CT - Connecticut
+													option(value='DC') DC - District of Columbia
+													option(value='DE') DE - Deleware
+													option(value='FL') FL - Florida
+													option(value='GA') GA - Georgia
+													option(value='HI') HI - Hawaii
+													option(value='ID') ID - Idaho
+													option(value='IL') IL - Illinois
+													option(value='IN') IN - Indiana
+													option(value='IA') IA - Iowa
+													option(value='KS') KS - Kansas
+													option(value='KY') KY - Kentucky
+													option(value='LA') LA - Louisiana
+													option(value='ME') ME - Maine
+													option(value='MD') MD - Maryland
+													option(value='MA') MA - Massachusetts
+													option(value='MI') MI - Michigan
+													option(value='MN') MN - Minnesota
+													option(value='MS') MS - Mississippi
+													option(value='MO') MO - Missouri
+													option(value='MT') MT - Montana
+													option(value='NE') NE - Nebraska
+													option(value='NV') NV - Nevada
+													option(value='NH') NH - New Hampshire
+													option(value='NJ') NJ - New Jersey
+													option(value='NM') NM - New Mexico
+													option(value='NY') NY - New York
+													option(value='NC') NC - North Carolina
+													option(value='ND') ND - North Dakota
+													option(value='OH') OH - Ohio
+													option(value='OK') OK - Oklahoma
+													option(value='OR') OR - Oregon
+													option(value='PA') PA - Pennsylvania
+													option(value='RI') RI - Rhode Island
+													option(value='SC') SC - South Carolina
+													option(value='SD') SD - South Dakota
+													option(value='TN') TN - Tennessee
+													option(value='TX') TX - Texas
+													option(value='UT') UT - Utah
+													option(value='VT') VT - Vermont
+													option(value='VA') VA - Virginia
+													option(value='WA') WA - Washington
+													option(value='WV') WV - West Virginia
+													option(value='WI') WI - Wisconsin
+													option(value='WY') WY - Wyoming
+									.form-group.text-left
+										label.col-sm-6.control-label.text-left Buying Your Next Home?
+											i.fa.fa-rw.fa-question-circle.blue.ml3(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="If you are not buying the home you are moving into, or only wish to have a Real Estate Agent assist in selling your existing home, select 'No'.")
+										.col-sm-5
+											label.radio.radio-inline
+												input(type="radio", name="buyingY", value="Yes", ng-model="signupUser.buyer")
+												| Yes
+											label.radio.radio-inline
+												input(type="radio", name="buyingN", value="No", ng-model="signupUser.buyer")
+												| No
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.termsAgreed")
+												span.mr5
+													| I accept the
+													a.form-link.blue.ml3(href="terms.html", target="_blank") Terms &#38; Agreement
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.emailUpdates")
+												span.mr5
+													| I would like to receive occasional emails about new features and product enhancements.
+									.form-group
+										center(align="center")
+											.alert.alert-danger(role="alert", ng-if="!signupUser.profileName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.state || !signupUser.buyer || !signupUser.termsAgreed")
+												| Please fill out all form fields and agree to the Terms and Conditions.
+											button.btn.btn-primary(type="submit", ng-disabled="!signupUser.profileName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.state || !signupUser.buyer || !signupUser.termsAgreed")
+												i.fa.fa-check-circle.mr5
+												| Create Account
+											.alert.alert-success.inline.bold(ng-if="success") {{success}}
+											.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+											p.mt10
+												em.mr3 Already have an account?
+												a.form-link.ml3(href="login.html")
+													strong.blue Login
+						#buyerSignup.tab-pane.fade
+							.account-box.register-box
+								h4 Home Buyer Signup
+								form.form-horizontal(role="form", name="buyerFrm", ng-submit="buyerSignup()")
+									.form-group
+										label.control-label.sr-only(for="profileName") Username
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-user
+												input#profileName.form-control(type="text", name="profileName", ng-model="signupUser.profileName", ng-required="true", placeholder="Username")
+										.col-sm-1
+											i.fa.fa-rw.fa-question-circle.form-info(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Since your personal details are private, this is the name Real Estate Agents will see associated with your profile.")
+									.form-group
+										label.control-label.sr-only(for="email") Email (NEVER shared with Real Estate Agents)
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-envelope
+												input#email.form-control(type="email", name="username", ng-model="signupUser.username", ng-required="true", placeholder="Email (NEVER shared with Real Estate Agents)")
+										.col-sm-1
+											i.fa.fa-rw.fa-question-circle.form-info(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="This will be used for future login purposes only. Your email address is never visible to Real Estate Agents.")
+									.form-group
+										label.control-label.sr-only(for="password") Password
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#password.form-control(type="password", name="password", ng-model="signupUser.password", ng-required="true", placeholder="Password (Minimum 4 Characters)")
+									.form-group
+										label.control-label.sr-only(for="password2") Repeat Password
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#password2.form-control(type="password", placeholder="Confirm Password", ng-model="signupUser.passwordConfirm")
+									.form-group
+										label.control-label.sr-only(for="state") State
+										.col-sm-11
+											.input-group
+												span.input-group-addon
+													i.fa.fa-map-marker
+												select#state.form-control(name="state", placeholder="State", ng-model="signupUser.state", ng-required="true")
+													option(value='') State
+													option(value='AL') AL - Alabama
+													option(value='AK') AK - Alaska
+													option(value='AZ') AZ - Arizona
+													option(value='AR') AR - Arkansas
+													option(value='CA') CA - California
+													option(value='CO') CO - Colorado
+													option(value='CT') CT - Connecticut
+													option(value='DC') DC - District of Columbia
+													option(value='DE') DE - Deleware
+													option(value='FL') FL - Florida
+													option(value='GA') GA - Georgia
+													option(value='HI') HI - Hawaii
+													option(value='ID') ID - Idaho
+													option(value='IL') IL - Illinois
+													option(value='IN') IN - Indiana
+													option(value='IA') IA - Iowa
+													option(value='KS') KS - Kansas
+													option(value='KY') KY - Kentucky
+													option(value='LA') LA - Louisiana
+													option(value='ME') ME - Maine
+													option(value='MD') MD - Maryland
+													option(value='MA') MA - Massachusetts
+													option(value='MI') MI - Michigan
+													option(value='MN') MN - Minnesota
+													option(value='MS') MS - Mississippi
+													option(value='MO') MO - Missouri
+													option(value='MT') MT - Montana
+													option(value='NE') NE - Nebraska
+													option(value='NV') NV - Nevada
+													option(value='NH') NH - New Hampshire
+													option(value='NJ') NJ - New Jersey
+													option(value='NM') NM - New Mexico
+													option(value='NY') NY - New York
+													option(value='NC') NC - North Carolina
+													option(value='ND') ND - North Dakota
+													option(value='OH') OH - Ohio
+													option(value='OK') OK - Oklahoma
+													option(value='OR') OR - Oregon
+													option(value='PA') PA - Pennsylvania
+													option(value='RI') RI - Rhode Island
+													option(value='SC') SC - South Carolina
+													option(value='SD') SD - South Dakota
+													option(value='TN') TN - Tennessee
+													option(value='TX') TX - Texas
+													option(value='UT') UT - Utah
+													option(value='VT') VT - Vermont
+													option(value='VA') VA - Virginia
+													option(value='WA') WA - Washington
+													option(value='WV') WV - West Virginia
+													option(value='WI') WI - Wisconsin
+													option(value='WY') WY - Wyoming
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.termsAgreed")
+												span.mr5
+													| I accept the
+													a.form-link.blue.ml3(href="terms.html", target="_blank") Terms &#38; Agreement
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.emailUpdates")
+												span.mr5
+													| I would like to receive occasional emails about new features and product enhancements.
+									.form-group
+										center(align="center")
+											.alert.alert-danger(role="alert", ng-if="!signupUser.profileName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.state || !signupUser.termsAgreed")
+												| Please fill out all form fields and agree to the Terms and Conditions.
+											button.btn.btn-primary(type="submit", ng-disabled="!signupUser.profileName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.state || !signupUser.termsAgreed")
+												i.fa.fa-check-circle.mr5
+												| Create Account
+											p.mt10
+												em.mr3 Already have an account?
+												a.form-link.ml3(href="login.html")
+													strong.blue Login
+						#agentSignup.tab-pane.fade
+							.account-box.register-box
+								h4 Real Estate Agent Signup
+								form.form-horizontal(role="form", name="agentFrm", ng-submit="agentSignup()")
+									.form-group
+										label.control-label.sr-only(for="firstName") First Name
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-user
+												input#firstName.form-control(type="text", name="firstName", ng-model="signupUser.firstName", ng-required="true", placeholder="First Name")
+									.form-group
+										label.control-label.sr-only(for="lastName") Last Name
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-user
+												input#lastName.form-control(type="text", name="lastName", ng-model="signupUser.lastName", ng-required="true", placeholder="Last Name")
+									.form-group
+										label.control-label.sr-only(for="email") Email
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-envelope
+												input#email.form-control(type="email", name="username", ng-model="signupUser.username", ng-required="true", placeholder="Email")
+									.form-group
+										label.control-label.sr-only(for="password") Password
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#password.form-control(type="password", name="password", ng-model="signupUser.password", ng-required="true", placeholder="Password (Minimum 4 Characters)")
+									.form-group
+										label.control-label.sr-only(for="passwordConfirm") Confirm Password
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-lock
+												input#passwordConfirm.form-control(type="password", placeholder="Confirm Password", ng-model="signupUser.passwordConfirm")
+									.form-group
+										label.control-label.sr-only(for="agentID") Agent ID
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-user
+												input#agentID.form-control(type="text", name="agentID", ng-model="signupUser.agentID", ng-required="true", placeholder="Agent ID/Real Estate License #")
+									.form-group
+										label.control-label.sr-only(for="state") State
+										.col-sm-12
+											.input-group
+												span.input-group-addon
+													i.fa.fa-map-marker
+												select#state.form-control(name="state", placeholder="State", ng-model="signupUser.state", ng-required="true")
+													option(value='') State
+													option(value='AL') AL - Alabama
+													option(value='AK') AK - Alaska
+													option(value='AZ') AZ - Arizona
+													option(value='AR') AR - Arkansas
+													option(value='CA') CA - California
+													option(value='CO') CO - Colorado
+													option(value='CT') CT - Connecticut
+													option(value='DC') DC - District of Columbia
+													option(value='DE') DE - Deleware
+													option(value='FL') FL - Florida
+													option(value='GA') GA - Georgia
+													option(value='HI') HI - Hawaii
+													option(value='ID') ID - Idaho
+													option(value='IL') IL - Illinois
+													option(value='IN') IN - Indiana
+													option(value='IA') IA - Iowa
+													option(value='KS') KS - Kansas
+													option(value='KY') KY - Kentucky
+													option(value='LA') LA - Louisiana
+													option(value='ME') ME - Maine
+													option(value='MD') MD - Maryland
+													option(value='MA') MA - Massachusetts
+													option(value='MI') MI - Michigan
+													option(value='MN') MN - Minnesota
+													option(value='MS') MS - Mississippi
+													option(value='MO') MO - Missouri
+													option(value='MT') MT - Montana
+													option(value='NE') NE - Nebraska
+													option(value='NV') NV - Nevada
+													option(value='NH') NH - New Hampshire
+													option(value='NJ') NJ - New Jersey
+													option(value='NM') NM - New Mexico
+													option(value='NY') NY - New York
+													option(value='NC') NC - North Carolina
+													option(value='ND') ND - North Dakota
+													option(value='OH') OH - Ohio
+													option(value='OK') OK - Oklahoma
+													option(value='OR') OR - Oregon
+													option(value='PA') PA - Pennsylvania
+													option(value='RI') RI - Rhode Island
+													option(value='SC') SC - South Carolina
+													option(value='SD') SD - South Dakota
+													option(value='TN') TN - Tennessee
+													option(value='TX') TX - Texas
+													option(value='UT') UT - Utah
+													option(value='VT') VT - Vermont
+													option(value='VA') VA - Virginia
+													option(value='WA') WA - Washington
+													option(value='WV') WV - West Virginia
+													option(value='WI') WI - Wisconsin
+													option(value='WY') WY - Wyoming
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.termsAgreed")
+												span.mr5
+													| I accept the
+													a.form-link.blue.ml3(href="terms.html", target="_blank") Terms &#38; Agreement
+									.form-group.text-left
+										.col-sm-12
+											label.fancy-checkbox
+												input(type="checkbox", ng-model="signupUser.emailUpdates")
+												span.mr5
+													| I would like to receive occasional emails about new features and product enhancements.
+									.form-group
+										center(align="center")
+											.alert.alert-danger(role="alert", ng-if="!signupUser.firstName || !signupUser.lastName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.agentID || !signupUser.state || !signupUser.termsAgreed")
+												| Please fill out all form fields and agree to the Terms and Conditions.
+											button.btn.btn-primary(type="submit", ng-disabled="!signupUser.firstName || !signupUser.lastName || !signupUser.username || !signupUser.password || !signupUser.passwordConfirm || !signupUser.agentID || !signupUser.state || !signupUser.termsAgreed")
+												i.fa.fa-check-circle.mr5
+												| Create Account
+											p.mt10
+												em.mr3 Already have an account?
+												a.form-link.ml3(href="login.html")
+													strong.blue Login
+
+		#signupErrorModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						button.close(type="button", data-dismiss="modal")
+							span(aria-hidden="true") &#215;
+							span.sr-only Close
+						center(align="center")
+							h4#largeModalLabel.modal-title Oops!
+					.modal-body
+						center(align="center")
+							.row
+								.form-group.text-center
+									label.col-sm-12.text-center Unable to sign up with the information provided. Please go back and review the fields, or if you have already created an account, go to the login page.
+							.row
+								center(align="center")
+									button.btn.btn-primary.mr10(data-dismiss="modal") Review Signup
+									a.btn.btn-danger(href="/login.html") Go To Login
+
+		#userSignupModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						center(align="center")
+							h4#largeModalLabel.modal-title Signing Up
+					.modal-body
+						center(align="center")
+							.row
+								.form-group.text-center
+									label.col-sm-12.text-center Creating account
+										i.fa.fa-spinner.fa-pulse.ml5
+
+		#consumerSignupModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						center(align="center")
+							h4#largeModalLabel.modal-title Signing Up
+					.modal-body
+						center(align="center")
+							.row
+								.form-group.text-center
+									label.col-sm-12.text-center Creating home buyer/seller profile
+										i.fa.fa-spinner.fa-pulse.ml5
+
+		#agentSignupModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+			.modal-dialog.modal-lg
+				.modal-content
+					.modal-header
+						center(align="center")
+							h4#largeModalLabel.modal-title Signing Up
+					.modal-body
+						center(align="center")
+							.row
+								.form-group.text-center
+									label.col-sm-12.text-center Creating Real Estate Agent profile
+										i.fa.fa-spinner.fa-pulse.ml5

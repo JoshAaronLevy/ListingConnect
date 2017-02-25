@@ -1,0 +1,71 @@
+/* START COMPARISON TABLE STYLES */
+#comparetable {
+	width: 80%;
+	table-layout: fixed;
+	text-align: center;
+	margin-top: 0px !important;
+	margin-left: 10% !important;
+	margin: 4em 0;
+	border-collapse: collapse;
+}
+#comparetable tr {
+	background: transparent !important;
+}
+#comparetable td,
+#comparetable th {
+	padding: 20px;
+	text-align: center;
+}
+#comparetable td.rowTitle {
+	text-align: left;
+	font-size: 14px;
+}
+.table-plain {
+	font-size: 16px;
+	font-weight: 500;
+}
+.table-small {
+	font-size: 14px;
+	font-weight: 700;
+}
+.table-medium {
+	font-size: 16px;
+	font-weight: 700;
+}
+.table-large {
+	font-size: 18px;
+	font-weight: 700;
+}
+.blank {
+	background: none !important;
+	border: none !important;
+}
+.blueshine th {
+	background-color: #b8cee2;
+	font-size: 22px;
+	color: #0c3053;
+	text-align: center;
+	text-shadow: 0 1px 0 #e0ecf7;
+	border: 1px solid #9fb6c8;
+}
+.blueshine th.basic {
+  font-weight: 500;
+  font-size: 18px;
+}
+.blueshine th.engagement {
+  font-weight: 500;
+  font-size: 20px;
+}
+.blueshine th.premium {
+  font-weight: 700;
+  font-size: 22px;
+}
+.blueshine td {
+	background-color: #f0f1f1;
+	border: 1px solid #c8d6e2;
+} 
+.blueshine td.rowTitle {
+	border-left: 2px solid #1E4594;
+	font-weight: 700;
+}
+/* END COMPARISON TABLE STYLES */

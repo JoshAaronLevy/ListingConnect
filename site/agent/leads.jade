@@ -1,0 +1,595 @@
+extends ../../themes/default.jade
+
+block header
+	include ../../themes/header-user.jade
+
+block scripts
+	script(src="/js/apps/agent/index.min.js?cache=#{cacheBreaker}")
+
+block body
+	script.
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-50168733-1', 'auto');
+		ga('send', 'pageview');
+	// Google Tag Manager
+	noscript
+		iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
+	script.
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-K3ZLZJ');
+	// End Google Tag Manager
+	.wrapper
+		center(align="center")
+			script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+			// Agent Leads
+			ins.adsbygoogle(style='display:inline-block;width:728px;height:90px', data-ad-client='ca-pub-4950211747544966', data-ad-slot='9055403934')
+			script.
+				(adsbygoogle = window.adsbygoogle || []).push({});
+	.wrapper
+		.container
+			div(ng-controller="LeadController")
+				.col-md-12
+					center(align="center")
+						h2.name.mb20 Leads
+						br
+						.alert.alert-danger.alert-danger-rw.alert-dismissible(role="alert", ng-if="item && (item.length < 1)")
+							button.close(type="button", data-dismiss="alert")
+								span(aria-hidden="true") &#215;
+								span.sr-only Close
+							| You have no matching consumers yet. Please check back soon, as we are working diligently to acquire matching consumers in your area.
+						//- label Filter: &#160;
+						//- .btn-group(data-toggle="buttons")
+						//-	 label.btn.btn-primary.active.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="View all leads, unfiltered by type.")
+						//-		 input(type="radio", value="all", name="leadFilter", checked="checked")
+						//-		 span View All Leads
+						//-		 i.fa.fa-info-circle.ml5
+						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who need an agent to help them sell their current home and find their next home.")
+						//-		 input(type="radio", value="sellerBuyer", name="leadFilter")
+						//-		 span Selling and Buying
+						//-		 i.fa.fa-info-circle.ml5
+						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who only need an agent to help them sell their current home but not buying their next home.")
+						//-		 input(type="radio", value="sellerOnly", name="leadFilter")
+						//-		 span Selling Only
+						//-		 i.fa.fa-info-circle.ml5
+						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who do not have an existing home they are selling.")
+						//-		 input(type="radio", value="buyerOnly", name="leadFilter")
+						//-		 span Buying Only
+						//-		 i.fa.fa-info-circle.ml5
+					.lead-modal
+						ul.cd-items.cd-container.list-unstyled
+							li.cd-item.col-md-4(ng-repeat="item in $root.matchedConsumers | orderBy:'createdAt':true")
+								.boxed-content.left-aligned.border-gray(ng-if="item.buyer === 'Yes' && item.seller === 'No'")
+									center(align="center")
+										h2.boxed-content-title {{item.profileName}}
+										h2.boxed-content-subtitle(ng-if="!item.buyerCities") Location: N/A
+										h2.boxed-content-subtitle {{item.buyerCities}}
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-times.false
+										h2.boxed-content-title.false-text Seller
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-check.true
+										h2.boxed-content-title.true-text Buyer
+									ul.list-unstyled.project-detail-list.text-left
+										li
+											.field-box Price Range:
+											.value-box(ng-if="!item.buyerPriceMin && !item.buyerPriceMax") N/A
+											.value-box(ng-if="item.buyerPriceMin && item.buyerPriceMax") {{item.buyerPriceMin | currency : $ : 0}} to {{item.buyerPriceMax | currency : $ : 0}}
+										li
+											.field-box Timeframe:
+											.value-box(ng-if="!item.timeframe") N/A
+											.value-box(ng-if="item.timeframe") {{item.timeframe}}
+									center(align="center")
+										a.btn.btn-primary.mr7(data-toggle="modal", data-target="#leadDetailsModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-list-alt.button-icon
+											| Details
+										a.btn.btn-danger.mr7(data-toggle="modal", data-target="#addFaveModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-heart.button-icon
+											| Favorite
+										a.btn.btn-success.mr7(data-toggle="modal", data-target="#sendMessageModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-envelope.button-icon
+											| Message
+								.boxed-content.left-aligned.border-gray(ng-if="item.seller === 'Yes' && item.buyer === 'No'")
+									center(align="center")
+										h2.boxed-content-title {{item.profileName}}
+										h2.boxed-content-subtitle(ng-if="!item.sellerCity") Location: N/A
+										h2.boxed-content-subtitle {{item.sellerCity}}
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-check.true
+										h2.boxed-content-title.true-text Seller
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-times.false
+										h2.boxed-content-title.false-text Buyer
+									ul.list-unstyled.project-detail-list.text-left
+										li
+											.field-box Price Range:
+											.value-box(ng-if="!item.sellerPriceMin && !item.sellerPriceMax") N/A
+											.value-box(ng-if="item.sellerPriceMin && item.sellerPriceMax") {{item.sellerPriceMin | currency : $ : 0}} to {{item.sellerPriceMax | currency : $ : 0}}
+										li
+											.field-box Timeframe:
+											.value-box(ng-if="!item.timeframe") N/A
+											.value-box(ng-if="item.timeframe") {{item.timeframe}}
+									center(align="center")
+										a.btn.btn-primary.mr7(data-toggle="modal", data-target="#leadDetailsModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-list-alt.button-icon
+											| Details
+										a.btn.btn-danger.mr7(data-toggle="modal", data-target="#addFaveModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-heart.button-icon
+											| Favorite
+										a.btn.btn-success.mr7(data-toggle="modal", data-target="#sendMessageModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-envelope.button-icon
+											| Message
+								.boxed-content.left-aligned.border-gray(ng-if="item.seller === 'Yes' && item.buyer === 'Yes'")
+									center(align="center")
+										h2.boxed-content-title {{item.profileName}}
+										h2.boxed-content-subtitle(ng-if="!item.sellerCity") Location: N/A
+										h2.boxed-content-subtitle {{item.sellerCity}}
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-check.true
+										h2.boxed-content-title.true-text Seller
+									.col-xs-6
+										center(align="center")
+											i.fa.fa-check.true
+										h2.boxed-content-title.true-text Buyer
+									ul.list-unstyled.project-detail-list.text-left
+										li
+											.field-box Price Range:
+											.value-box(ng-if="!item.sellerPriceMin && !item.sellerPriceMax") N/A
+											.value-box(ng-if="item.sellerPriceMin && item.sellerPriceMax") {{item.sellerPriceMin | currency : $ : 0}} to {{item.sellerPriceMax | currency : $ : 0}}
+										li
+											.field-box Timeframe:
+											.value-box(ng-if="!item.timeframe") N/A
+											.value-box(ng-if="item.timeframe") {{item.timeframe}}
+									center(align="center")
+										a.btn.btn-primary.mr7(data-toggle="modal", data-target="#leadDetailsModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-list-alt.button-icon
+											| Details
+										a.btn.btn-danger.mr7(data-toggle="modal", data-target="#addFaveModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-heart.button-icon
+											| Favorite
+										a.btn.btn-success.mr7(data-toggle="modal", data-target="#sendMessageModal", ng-click="$root.selectedLead = item")
+											i.fa.fa-envelope.button-icon
+											| Message
+
+					#leadLoadingModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Loading
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Loading matching buyers and sellers
+													i.fa.fa-spinner.fa-pulse.ml5
+
+					#addFaveModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									button.close(type="button", data-dismiss="modal")
+										span(aria-hidden="true") &#215;
+										span.sr-only Close
+									center(align="center")
+										h4#largeModalLabel.modal-title Add Favorite
+								.modal-body
+									form(role="addFaveForm", ng-submit="faveLead(lead)")
+										center(align="center")
+											.row
+												.form-group.text-center
+													label.col-sm-12.text-center Are you sure you would like to add {{$root.selectedLead.profileName}} to your favorites?
+											.row
+												center(align="center")
+													br
+													button.btn.btn-primary.mr10(type="submit") Yes
+													button.btn.btn-danger(data-dismiss="modal") No
+											.row
+												center(align="center")
+													.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+								//- .modal-footer
+								//-	 button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+					#saveSuccessModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Success
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Lead successfully added to Favorites!
+
+					#sendMessageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									button.close(type="button", data-dismiss="modal")
+										span(aria-hidden="true") &#215;
+										span.sr-only Close
+									center(align="center")
+										h4#largeModalLabel.modal-title Send Message
+								.modal-body
+									form(role="newMsgForm", ng-submit="messageLead()")
+										center(align="center")
+											.row
+												.form-group.text-center
+													label.col-sm-12.text-center Send to {{$root.selectedLead.profileName}}
+											.row
+												.col-xs-10
+													textarea.form-control(placeholder='Message', rows='5', ng-model="$root.message.message")
+												center(align="center")
+													br
+													button.btn.btn-primary.mr80.mt15(type="submit") Send
+											.row
+												center(align="center")
+													.alert.alert-danger.inline.bold(ng-if="error") {{error}}
+								.modal-footer
+									button.btn.btn-rw.btn-danger(data-dismiss="modal") Cancel
+
+					#messageSuccessModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-header
+									center(align="center")
+										h4#largeModalLabel.modal-title Success
+								.modal-body
+									center(align="center")
+										.row
+											.form-group.text-center
+												label.col-sm-12.text-center Message sent!
+
+					#leadDetailsModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="largeModalLabel", aria-hidden="true")
+						.modal-dialog.modal-lg
+							.modal-content
+								.modal-body
+									center(align="center")
+										.modal-title {{$root.selectedLead.profileName}}
+										//- a.btn.btn-danger.btn-subtitle.mr10(ng-click="faveLead($root.selectedLead)")
+										//- 	| Favorite
+										//- a.btn.btn-danger.mr10(ng-if="selectedLead.favorite === true", ng-disabled="selectedLead.favorite === true")
+										//- 	| In Favorites
+										//- a.btn.btn-success.btn-subtitle(data-toggle="modal", data-target="#messageModal", ng-click="$root.selectedLead = item")
+										//- 	| Message
+									br
+									center(align="center")
+										.custom-tabs-line.tabs-line-bottom
+											ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedLead.buyer === 'Yes' && $root.selectedLead.seller === 'No'")
+												li.active
+													a(href="#buyerDetails", data-toggle="tab")
+														| Details
+											ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedLead.seller === 'Yes' && $root.selectedLead.buyer === 'Yes'")
+												li.active
+													a(href="#sellerDetails", data-toggle="tab")
+														| Current Home
+												li
+													a(href="#buyerDetails", data-toggle="tab")
+														| Next Home
+											ul.nav.nav-tabs.tabs-iconized(ng-if="$root.selectedLead.seller === 'Yes' && !$root.selectedLead.buyer === 'No'")
+												li.active
+													a(href="#sellerDetails", data-toggle="tab")
+														| Current Home
+										.tab-content.clearfix(ng-if="$root.selectedLead.seller === 'Yes' && $root.selectedLead.buyer === 'No'")
+											#sellerDetails.tab-pane.fade.in.active
+												.col-sm-6
+													.section-title
+														h4 Current Home Details
+														hr
+													ul.profile-table.text-left
+														li
+															.field Selling Timeframe:
+															.value(ng-if="!$root.selectedLead.timeframe") N/A
+															.value(ng-if="$root.selectedLead.timeframe") {{$root.selectedLead.timeframe}}
+														li
+															.field Price Range:
+															.value(ng-if="!$root.selectedLead.sellerPriceMin && !$root.selectedLead.sellerPriceMax") N/A
+															.value(ng-if="$root.selectedLead.sellerPriceMin && $root.selectedLead.sellerPriceMax") {{$root.selectedLead.sellerPriceMin | currency : $ : 0}} to {{$root.selectedLead.sellerPriceMax | currency : $ : 0}}
+														li
+															.field Property Type:
+															.value(ng-if="!$root.selectedLead.sellerPropType") N/A
+															.value(ng-if="$root.selectedLead.sellerPropType") {{$root.selectedLead.sellerPropType}}
+														li
+															.field Property Style:
+															.value(ng-if="!$root.selectedLead.sellerPropStyle") N/A
+															.value(ng-if="$root.selectedLead.sellerPropStyle") {{$root.selectedLead.sellerPropStyle}}
+														li
+															.field Bedrooms:
+															.value(ng-if="!$root.selectedLead.sellerBeds") N/A
+															.value(ng-if="$root.selectedLead.sellerBeds") {{$root.selectedLead.sellerBeds}}
+														li
+															.field Bathrooms:
+															.value(ng-if="!$root.selectedLead.sellerBaths") N/A
+															.value(ng-if="$root.selectedLead.sellerBaths") {{$root.selectedLead.sellerBaths}}
+														li
+															.field Square Feet:
+															.value(ng-if="!$root.selectedLead.sellerSqft") N/A
+															.value(ng-if="$root.selectedLead.sellerSqft") {{$root.selectedLead.sellerSqft | number : 0}}
+														li
+															.field City, State:
+															.value(ng-if="!$root.selectedLead.sellerCity && !$root.selectedLead.state") N/A
+															.value(ng-if="$root.selectedLead.sellerCity && $root.selectedLead.state") {{$root.selectedLead.sellerCity}}, {{$root.selectedLead.state}}
+														li
+															.field Parking Type:
+															.value(ng-if="!$root.selectedLead.sellerParkingType") N/A
+															.value(ng-if="$root.selectedLead.sellerParkingType") {{$root.selectedLead.sellerParkingType}}
+														li
+															.field Parking Spaces:
+															.value(ng-if="!$root.selectedLead.sellerParkingSpaces") N/A
+															.value(ng-if="$root.selectedLead.sellerParkingSpaces") {{$root.selectedLead.sellerParkingSpaces}}
+														li
+															.field Basement:
+															.value(ng-if="!$root.selectedLead.sellerBasementType") N/A
+															.value(ng-if="$root.selectedLead.sellerBasementType") {{$root.selectedLead.sellerBasementType}}
+														li
+															.field School District:
+															.value(ng-if="!$root.selectedLead.sellerSchoolDist") N/A
+															.value(ng-if="$root.selectedLead.sellerSchoolDist") {{$root.selectedLead.sellerSchoolDist}}
+														li
+															.field HOA Fee:
+															.value(ng-if="!$root.selectedLead.sellerHoaFee && !$root.selectedLead.sellerHoaTerm") N/A
+															.value(ng-if="$root.selectedLead.sellerHoaFee && $root.selectedLead.sellerHoaTerm") {{$root.selectedLead.sellerHoaFee | currency : $ : 0}} per {{$root.selectedLead.sellerHoaTerm}}
+														li
+															.field Lot Size:
+															.value(ng-if="!$root.selectedLead.sellerLotSize") N/A
+															.value(ng-if="$root.selectedLead.sellerLotSize") {{$root.selectedLead.sellerLotSize | number : 0}}
+														li
+															.field Year Built:
+															.value(ng-if="!$root.selectedLead.sellerYearBuilt") N/A
+															.value(ng-if="$root.selectedLead.sellerYearBuilt") {{$root.selectedLead.sellerYearBuilt}}
+												.col-sm-6
+													.section-title
+														h4 Seller Remarks
+														hr
+													p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedLead.sellerRemarks)", ng-if="$root.selectedLead.sellerRemarks")
+													.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedLead.sellerRemarks") There are no seller remarks currently available.
+										.tab-content.clearfix(ng-if="$root.selectedLead.seller === 'Yes' && $root.selectedLead.buyer === 'Yes'")
+											#sellerDetails.tab-pane.fade.in.active
+												.col-sm-6
+													.section-title
+														h4 Current Home Details
+														hr
+													ul.profile-table.text-left
+														li
+															.field Selling Timeframe:
+															.value(ng-if="!$root.selectedLead.timeframe") N/A
+															.value(ng-if="$root.selectedLead.timeframe") {{$root.selectedLead.timeframe}}
+														li
+															.field Price Range:
+															.value(ng-if="!$root.selectedLead.sellerPriceMin && !$root.selectedLead.sellerPriceMax") N/A
+															.value(ng-if="$root.selectedLead.sellerPriceMin && $root.selectedLead.sellerPriceMax") {{$root.selectedLead.sellerPriceMin | currency : $ : 0}} to {{$root.selectedLead.sellerPriceMax | currency : $ : 0}}
+														li
+															.field Property Type:
+															.value(ng-if="!$root.selectedLead.sellerPropType") N/A
+															.value(ng-if="$root.selectedLead.sellerPropType") {{$root.selectedLead.sellerPropType}}
+														li
+															.field Property Style:
+															.value(ng-if="!$root.selectedLead.sellerPropStyle") N/A
+															.value(ng-if="$root.selectedLead.sellerPropStyle") {{$root.selectedLead.sellerPropStyle}}
+														li
+															.field Bedrooms:
+															.value(ng-if="!$root.selectedLead.sellerBeds") N/A
+															.value(ng-if="$root.selectedLead.sellerBeds") {{$root.selectedLead.sellerBeds}}
+														li
+															.field Bathrooms:
+															.value(ng-if="!$root.selectedLead.sellerBaths") N/A
+															.value(ng-if="$root.selectedLead.sellerBaths") {{$root.selectedLead.sellerBaths}}
+														li
+															.field Square Feet:
+															.value(ng-if="!$root.selectedLead.sellerSqft") N/A
+															.value(ng-if="$root.selectedLead.sellerSqft") {{$root.selectedLead.sellerSqft | number : 0}}
+														li
+															.field City, State:
+															.value(ng-if="!$root.selectedLead.sellerCity && !$root.selectedLead.state") N/A
+															.value(ng-if="$root.selectedLead.sellerCity && $root.selectedLead.state") {{$root.selectedLead.sellerCity}}, {{$root.selectedLead.state}}
+														li
+															.field Parking Type:
+															.value(ng-if="!$root.selectedLead.sellerParkingType") N/A
+															.value(ng-if="$root.selectedLead.sellerParkingType") {{$root.selectedLead.sellerParkingType}}
+														li
+															.field Parking Spaces:
+															.value(ng-if="!$root.selectedLead.sellerParkingSpaces") N/A
+															.value(ng-if="$root.selectedLead.sellerParkingSpaces") {{$root.selectedLead.sellerParkingSpaces}}
+														li
+															.field Basement:
+															.value(ng-if="!$root.selectedLead.sellerBasementType") N/A
+															.value(ng-if="$root.selectedLead.sellerBasementType") {{$root.selectedLead.sellerBasementType}}
+														li
+															.field School District:
+															.value(ng-if="!$root.selectedLead.sellerSchoolDist") N/A
+															.value(ng-if="$root.selectedLead.sellerSchoolDist") {{$root.selectedLead.sellerSchoolDist}}
+														li
+															.field HOA Fee:
+															.value(ng-if="!$root.selectedLead.sellerHoaFee && !$root.selectedLead.sellerHoaTerm") N/A
+															.value(ng-if="$root.selectedLead.sellerHoaFee && $root.selectedLead.sellerHoaTerm") {{$root.selectedLead.sellerHoaFee | currency : $ : 0}} per {{$root.selectedLead.sellerHoaTerm}}
+														li
+															.field Lot Size:
+															.value(ng-if="!$root.selectedLead.sellerLotSize") N/A
+															.value(ng-if="$root.selectedLead.sellerLotSize") {{$root.selectedLead.sellerLotSize | number : 0}}
+														li
+															.field Year Built:
+															.value(ng-if="!$root.selectedLead.sellerYearBuilt") N/A
+															.value(ng-if="$root.selectedLead.sellerYearBuilt") {{$root.selectedLead.sellerYearBuilt}}
+												.col-sm-6
+													.section-title
+														h4 Seller Remarks
+														hr
+													p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedLead.sellerRemarks)", ng-if="$root.selectedLead.sellerRemarks")
+													.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedLead.sellerRemarks") There are no seller remarks currently available.
+											#buyerDetails.tab-pane.fade.in
+												.col-sm-6
+													.section-title
+														h4 Next Home Details
+														hr
+													ul.profile-table.text-left
+														li
+															.field Buying Timeframe:
+															.value(ng-if="!$root.selectedLead.timeframe") N/A
+															.value(ng-if="$root.selectedLead.timeframe") {{$root.selectedLead.timeframe}}
+														li
+															.field Property Type:
+															.value(ng-if="!$root.selectedLead.buyerPropType") N/A
+															.value(ng-if="$root.selectedLead.buyerPropType") {{$root.selectedLead.buyerPropType}}
+														li
+															.field Price Range:
+															.value(ng-if="!$root.selectedLead.buyerPriceMin && !$root.selectedLead.buyerPriceMax") N/A
+															.value(ng-if="$root.selectedLead.buyerPriceMin && $root.selectedLead.buyerPriceMax") {{$root.selectedLead.buyerPriceMin | currency : $ : 0}} to {{$root.selectedLead.buyerPriceMax | currency : $ : 0}}
+														li
+															.field Bedrooms:
+															.value(ng-if="!$root.selectedLead.buyerBedsMin && !$root.selectedLead.buyerBedsMax") N/A
+															.value(ng-if="$root.selectedLead.buyerBedsMin && $root.selectedLead.buyerBedsMax") {{$root.selectedLead.buyerBedsMin}} to {{$root.selectedLead.buyerBedsMax}}
+														li
+															.field Bathrooms:
+															.value(ng-if="!$root.selectedLead.buyerBathsMin && !$root.selectedLead.buyerBathsMax") N/A
+															.value(ng-if="$root.selectedLead.buyerBathsMin && $root.selectedLead.buyerBathsMax") {{$root.selectedLead.buyerBathsMin}} to {{$root.selectedLead.buyerBathsMax}}
+														li
+															.field Square Feet:
+															.value(ng-if="!$root.selectedLead.buyerSqftMin && !$root.selectedLead.buyerSqftMax") N/A
+															.value(ng-if="$root.selectedLead.buyerSqftMin && $root.selectedLead.buyerSqftMax") {{$root.selectedLead.buyerSqftMin | number : 0}} to {{$root.selectedLead.buyerSqftMax | number : 0}}
+														li
+															.field Cities:
+															.value(ng-if="!$root.selectedLead.buyerCities") N/A
+															.value(ng-if="$root.selectedLead.buyerCities") {{$root.selectedLead.buyerCities.join(', ')}}
+												.col-sm-6
+													.section-title
+														h4 Buyer Remarks
+														hr
+													p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedLead.buyerRemarks)", ng-if="$root.selectedLead.buyerRemarks")
+													.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedLead.buyerRemarks") There are no buyer remarks currently available.
+										.tab-content.clearfix(ng-if="$root.selectedLead.seller === 'No' && $root.selectedLead.buyer === 'Yes'")
+											#buyerDetails.tab-pane.fade.in.active
+												.col-sm-6
+													.section-title
+														h4 Next Home Details
+														hr
+													ul.profile-table.text-left
+														li
+															.field Buying Timeframe:
+															.value(ng-if="!$root.selectedLead.timeframe") N/A
+															.value(ng-if="$root.selectedLead.timeframe") {{$root.selectedLead.timeframe}}
+														li
+															.field Property Type:
+															.value(ng-if="!$root.selectedLead.buyerPropType") N/A
+															.value(ng-if="$root.selectedLead.buyerPropType") {{$root.selectedLead.buyerPropType}}
+														li
+															.field Price Range:
+															.value(ng-if="!$root.selectedLead.buyerPriceMin && !$root.selectedLead.buyerPriceMax") N/A
+															.value(ng-if="$root.selectedLead.buyerPriceMin && $root.selectedLead.buyerPriceMax") {{$root.selectedLead.buyerPriceMin | currency : $ : 0}} to {{$root.selectedLead.buyerPriceMax | currency : $ : 0}}
+														li
+															.field Bedrooms:
+															.value(ng-if="!$root.selectedLead.buyerBedsMin && !$root.selectedLead.buyerBedsMax") N/A
+															.value(ng-if="$root.selectedLead.buyerBedsMin && $root.selectedLead.buyerBedsMax") {{$root.selectedLead.buyerBedsMin}} to {{$root.selectedLead.buyerBedsMax}}
+														li
+															.field Bathrooms:
+															.value(ng-if="!$root.selectedLead.buyerBathsMin && !$root.selectedLead.buyerBathsMax") N/A
+															.value(ng-if="$root.selectedLead.buyerBathsMin && $root.selectedLead.buyerBathsMax") {{$root.selectedLead.buyerBathsMin}} to {{$root.selectedLead.buyerBathsMax}}
+														li
+															.field Square Feet:
+															.value(ng-if="!$root.selectedLead.buyerSqftMin && !$root.selectedLead.buyerSqftMax") N/A
+															.value(ng-if="$root.selectedLead.buyerSqftMin && $root.selectedLead.buyerSqftMax") {{$root.selectedLead.buyerSqftMin | number : 0}} to {{$root.selectedLead.buyerSqftMax | number : 0}}
+														li
+															.field Cities:
+															.value(ng-if="!$root.selectedLead.buyerCities") N/A
+															.value(ng-if="$root.selectedLead.buyerCities") {{$root.selectedLead.buyerCities.join(', ')}}
+												.col-sm-6
+													.section-title
+														h4 Buyer Remarks
+														hr
+													p.mt10.text-left(ng-bind-html="trustAsHtml($root.selectedLead.buyerRemarks)", ng-if="$root.selectedLead.buyerRemarks")
+													.alert.alert-warning.alert-warning-rw(role="alert", ng-if="!$root.selectedLead.buyerRemarks") There are no buyer remarks currently available.
+								.modal-footer
+									button.btn.btn-rw.btn-danger(data-dismiss="modal") Close
+
+			#subscriptionModal.modal.fade(ng-controller="AuthController", tabindex="-1", role="dialog", aria-labelledby="subscriptionLabel", aria-hidden="true")
+				.modal-dialog.modal-lg
+					.modal-content
+						.modal-header
+							button.close(type="button", data-dismiss="modal")
+								span(aria-hidden="true") &#215;
+								span.sr-only Close
+							center(align="center")
+								h4#subscriptionLabel.modal-title Unlock This Lead
+						.modal-body
+							.multiple-pricing-table
+								.row
+									table#comparetable.blueshine
+										tr
+											td.blank
+											th.engagement Engagement
+											th.premium Premium
+										tr
+											td.blank
+											th
+												// form(action="/charge", method="POST")
+												// 	script.stripe-button(src="https://checkout.stripe.com/checkout.js", data-key="pk_test_6vSqbLmjoMSezUrdLj8dcAAn", data-image="/img/documentation/checkout/marketplace.png", data-name="ListingConnect", data-description="2 widgets", data-amount="2000", data-locale="auto")
+											th
+												// form(action="/charge", method="POST")
+												// 	script.stripe-button(src="https://checkout.stripe.com/checkout.js", data-key="pk_test_6vSqbLmjoMSezUrdLj8dcAAn", data-image="/img/documentation/checkout/marketplace.png", data-name="ListingConnect", data-description="2 widgets", data-amount="2000", data-locale="auto")
+										tr
+											td.rowTitle Price
+											td.table-plain $9 per Engagement
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="$9 one-time fee per lead engaged in the internal messaging system.")
+											td.table-large $29 per Month
+										tr
+											td.rowTitle Maximum Visible Leads
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Maximum number of leads that appear in your lead list.")
+											td.table-plain Unlimited
+											td.table-large Unlimited
+										tr
+											td.rowTitle Basic Agent Profile
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads will NOT be able to view your email address, phone numbers, website link or social media links.")
+											td.table-plain Yes
+											td.table-large Yes
+										tr
+											td.rowTitle Advanced Agent Profile
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads will be able to view your email address, phone numbers, website link and social media links.")
+											td.table-plain No
+											td.table-large Yes
+										tr
+											td.rowTitle Private Messaging
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Ability to cultivate leads via the private, internal messaging system.")
+											td.table-plain $9 per Lead
+											td.table-large Unlimited
+										tr
+											td.rowTitle Phone Support
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Phone support available Monday-Friday, 8:00am to 5:00pm Mountain Standard Time.")
+											td.table-plain Yes
+											td.table-large Yes
+										tr
+											td.rowTitle Email Support
+												i.fa.fa-question-circle.blue.ml5(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Email support available 8:00am to 5:00pm Mountain Standard Time.")
+											td.table-plain Sunday-Saturday
+											td.table-large Sunday-Saturday
+										tr
+											td.blank
+											th
+												// form(action="/charge", method="POST")
+												// 	script.stripe-button(src="https://checkout.stripe.com/checkout.js", data-key="pk_test_6vSqbLmjoMSezUrdLj8dcAAn", data-image="/img/documentation/checkout/marketplace.png", data-name="ListingConnect", data-description="2 widgets", data-amount="2000", data-locale="auto")
+											th
+												// form(action="/charge", method="POST")
+												// 	script.stripe-button(src="https://checkout.stripe.com/checkout.js", data-key="pk_test_6vSqbLmjoMSezUrdLj8dcAAn", data-image="/img/documentation/checkout/marketplace.png", data-name="ListingConnect", data-description="2 widgets", data-amount="2000", data-locale="auto")
+							.single-pricing-table
+								h4.plan-heading Office Site License Pricing
+								.plan-content
+									.row
+										.col-md-6
+											ul.list-unstyled.plan-detail-list
+												li
+													strong Looking to get signed up with a group of 50 or more Agents? Contact ListingConnect today to discuss company site license pricing options.
+										.col-md-6
+											a.btn.btn-primary.btn-lg.btn-block(href="/contact.html")
+												| Contact Us
+						.modal-footer
+							a.btn.btn-danger(data-dismiss="modal") Cancel
+
