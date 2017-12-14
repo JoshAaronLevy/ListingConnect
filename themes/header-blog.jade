@@ -10,20 +10,10 @@
 					img(src="/images/logo-big.png", alt="ListingConnect")
 			#main-nav.navbar-collapse.collapse.navbar-mega-menu
 				ul.nav.navbar-nav.navbar-right
-					//- li.dropdown
-					//-   a.dropdown-toggle(href="#", data-toggle="dropdown")
-					//-     | HOME
-					//-     i.fa.fa-angle-down
-					//-   ul.dropdown-menu(role="menu")
-					//-     li
-					//-       a(href="index.html") Home v1
-					//-     li
-					//-       a(href="index-v1_dark-header.html") Home v1 Dark Header
 					li
 						a(href="/blog/index.html") Blog Home
 					li
 						a(data-toggle="modal", data-target="#featuresModal") Sellers
-							//- span.label.label-danger.label-main-nav NEW
 					li
 						a(data-toggle="modal", data-target="#featuresModal") Buyers
 					li.dropdown
@@ -42,8 +32,6 @@
 						ul.dropdown-menu(role="menu")
 							li
 								a(data-toggle="modal", data-target="#aboutModal") What Is ListingConnect?
-							//- li
-							//-   a(href="/faq.html") Frequently Asked Questions
 							li
 								a(data-toggle="modal", data-target="#supportModal") Contact Us
 					li.dropdown(ng-if="!$root.user")
@@ -253,9 +241,6 @@
 									ul.list-unstyled.plan-detail-list
 										li
 											strong Looking to get signed up with a group of 50 or more Agents? Contact ListingConnect today to discuss company site license pricing options.
-								//- .col-md-6
-								//- 	a.btn.btn-primary.btn-lg.btn-block(data-toggle="modal", data-target="#supportModal")
-								//- 		| Contact Us
 				.modal-footer
 					button.btn.btn-danger(data-dismiss="modal") Close
 

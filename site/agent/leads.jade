@@ -7,30 +7,6 @@ block scripts
 	script(src="/js/apps/agent/index.min.js?cache=#{cacheBreaker}")
 
 block body
-	script.
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-50168733-1', 'auto');
-		ga('send', 'pageview');
-	// Google Tag Manager
-	noscript
-		iframe(src='//www.googletagmanager.com/ns.html?id=GTM-K3ZLZJ', height='0', width='0', style='display:none;visibility:hidden')
-	script.
-		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-K3ZLZJ');
-	// End Google Tag Manager
-	.wrapper
-		center(align="center")
-			script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
-			// Agent Leads
-			ins.adsbygoogle(style='display:inline-block;width:728px;height:90px', data-ad-client='ca-pub-4950211747544966', data-ad-slot='9055403934')
-			script.
-				(adsbygoogle = window.adsbygoogle || []).push({});
 	.wrapper
 		.container
 			div(ng-controller="LeadController")
@@ -43,24 +19,6 @@ block body
 								span(aria-hidden="true") &#215;
 								span.sr-only Close
 							| You have no matching consumers yet. Please check back soon, as we are working diligently to acquire matching consumers in your area.
-						//- label Filter: &#160;
-						//- .btn-group(data-toggle="buttons")
-						//-	 label.btn.btn-primary.active.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="View all leads, unfiltered by type.")
-						//-		 input(type="radio", value="all", name="leadFilter", checked="checked")
-						//-		 span View All Leads
-						//-		 i.fa.fa-info-circle.ml5
-						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who need an agent to help them sell their current home and find their next home.")
-						//-		 input(type="radio", value="sellerBuyer", name="leadFilter")
-						//-		 span Selling and Buying
-						//-		 i.fa.fa-info-circle.ml5
-						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who only need an agent to help them sell their current home but not buying their next home.")
-						//-		 input(type="radio", value="sellerOnly", name="leadFilter")
-						//-		 span Selling Only
-						//-		 i.fa.fa-info-circle.ml5
-						//-	 label.btn.btn-default.mb20(data-container="body", data-trigger="hover", data-toggle="popover", data-placement="top", data-content="Leads who do not have an existing home they are selling.")
-						//-		 input(type="radio", value="buyerOnly", name="leadFilter")
-						//-		 span Buying Only
-						//-		 i.fa.fa-info-circle.ml5
 					.lead-modal
 						ul.cd-items.cd-container.list-unstyled
 							li.cd-item.col-md-4(ng-repeat="item in $root.matchedConsumers | orderBy:'createdAt':true")

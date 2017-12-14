@@ -19,14 +19,7 @@ html(ng-app='app')
 			link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
 			link(rel='icon', href='/favicon.ico', type='image/x-icon')
 			link(href="/styles/include.min.css", rel="stylesheet", type="text/css")
-			//- link(href="/css/introjs.css", rel="stylesheet", type="text/css")
-			//- link(href="/css/introjs-nassim.css", rel="stylesheet", type="text/css")
 			link(href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.4.3/dist/textAngular.css", rel="stylesheet", type="text/css")
-
-			// script(type="text/javascript", src="https://js.stripe.com/v2/")
-			// script(type="text/javascript").
-			//   // This identifies your website in the createToken call below
-			//   Stripe.setPublishableKey('pk_test_2wXCeXDqc3LuaMbq2QkXW9WK');
 
 			script(src="//widget.cloudinary.com/global/all.js", type="text/javascript")
 
@@ -39,7 +32,6 @@ html(ng-app='app')
 			}
 
 	body(ng-cloak, ng-controller="MainController")
-		//- #royal_preloader
 		include header-user.jade
 		.clearfix
 		block body
@@ -54,9 +46,7 @@ html(ng-app='app')
 		script(src='//cdnjs.cloudflare.com/ajax/libs/textAngular/1.4.3/dist/textAngular.min.js')
 
 		script(src="/js/apps/agent/index.min.js")
-		//- script(src="/js/apps/index.min.js")
 		script(src="/js/vendor/main.js")
-		//- script(src="/js/apps/universal/index.js")
 		script(src="/js/vendor/bootstrap.js")
 		script(src="/js/vendor/hover-dropdown.js")
 		script(src="/js/vendor/jquery-easing.js")
@@ -87,6 +77,5 @@ html(ng-app='app')
 			delay:  'onload'
 			}
 			window.sr = new scrollReveal( config );
-		//- script(type="text/javascript", src="/js/main.min.js")
 		block scripts
 
