@@ -1,6 +1,6 @@
 FROM node:5.10.1
 
-MAINTAINER Dan Levy <Dan@DanLevy.net>
+LABEL Dan Levy <Dan@DanLevy.net>
 
 EXPOSE 3000
 
